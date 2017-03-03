@@ -1,4 +1,5 @@
 \documentclass[oneside]{homework} %%Change `twoside' to `oneside' if you are printing only on the one side of each sheet.
+\usepackage{amsmath}
 
 \studname{Alex Wong}
 \studmail{asw2181@columbia.edu}
@@ -17,13 +18,16 @@
 {\large b.} \textbf{Theorem 1b} The Modified Greedy algorithm achieves approximation ratio 2.
 \newline
 
-\textbf{Proof:} We first assume that the items are ordered in a non-increasing fashion according to the ratio $v_i/s_i$. Let's call the first item that does not fit in the knapsack using the Greedy algorithm as item $m$. We know that item $m$'s $v_i/s_i$ ratio $\geq$ items $m+1,...,n$'s $v_i/s_i$ ratio. Thus, if we are able to fit some fraction of item $m$ so that it fills up to the capacity of the knapsack, that solution will be $\geq$ OPT. We can define the fraction of item $m$ that fits into the knapsack as $\alpha$ where $\alpha = (B - \sum\limits_{i=1}^{m-1} v_i) / s_m$. Thus, $OPT \leq (\sum\limits_{i=1}^{m-1} v_i) + \alpha v_m$. Since $\alpha$ is some fraction $\leq 1$, we can also say that: $$OPT \leq (\sum\limits_{i=1}^{m-1} v_i) + \alpha v_m \leq (\sum\limits_{i=1}^{m-1} v_i) + v_m$$ From the inequality above, $\sum\limits_{i=1}^{m-1} v_i$ or $v_m$ must be at least $OPT/2$, showing that the Modified Greedy algorithm will always get a solution at least $OPT/2$, thus achieving an approximation ratio 2. \hfill\qed
+\textbf{Proof:} Let $OPT$ be the optimal solution that has maximum value where $v(OPT) = \sum\limits_{i\epsilon OPT}v_i$ subject to $\sum\limits_{i\epsilon OPT}s_i \leq B$. We first assume that the items are ordered in a non-increasing fashion according to the ratio $v_i/s_i$. Let's call the first item that does not fit in the knapsack using the Greedy algorithm as item $m$. We know that item $m$'s $v_i/s_i$ ratio $\geq$ items $m+1,...,n$'s $v_i/s_i$ ratio. Thus, if we are able to fit some fraction of item $m$ so that it fills up to the capacity of the knapsack, that solution will be $\geq$ OPT. We can define the fraction of item $m$ that fits into the knapsack as $\alpha$ where $\alpha = (B - \sum\limits_{i=1}^{m-1} v_i) / s_m$. Thus, $OPT \leq (\sum\limits_{i=1}^{m-1} v_i) + \alpha v_m$. Since $\alpha$ is some fraction $\leq 1$, we can also say that: $$OPT \leq (\sum\limits_{i=1}^{m-1} v_i) + \alpha v_m \leq (\sum\limits_{i=1}^{m-1} v_i) + v_m$$ From the inequality above, $\sum\limits_{i=1}^{m-1} v_i$ or $v_m$ must be at least $OPT/2$, showing that the Modified Greedy algorithm will always get a solution at least $OPT/2$, thus achieving an approximation ratio 2. \hfill\qed
 
 \problemNo{2}
-{\large1.} \textbf{Lemma 2.1} Let $T$ be the minimum spanning tree of the weighted complete graph $G$. Then cost($T$) $\leq$ OPT, where OPT is the cost of the optimal \textit{s-t} path.
+{\large a.} We know that the lower bound for OPT is $max(max_i(p_i), \frac{\sum\limits_{i}p_i}{m})$ where $i = 1,...,n$. 
 \newline
-
-\textbf{Proof:} We can prove this by contradiction. Suppose that cost($T$) $>$ OPT. We know that OPT must visit every node to create a path. Thus, if OPT $<$ cost($T$), it violates the very definition of a minimum spanning tree, proving that cost($T$) $>$ OPT can not be true. Thus, cost($T$) $\leq$ OPT. \hfill$\qed$
+\newline
+For $m$ = 2 machines and 5 jobs with processing times 3,3,2,2,2, the LPT algorithm will schedule 3,2,2 on $m_1$ and 3,2 on $m_2$, giving a makespan of 7. For OPT, we know that a lower bound is max = $max(3, 12/2) = 6$. We can achieve OPT by scheduling 3,3 on one machine and 2,2,2 on the other machine.
+\newline
+\newline
+For $m$ = 3 machines and 7 jobs with processing times 5,5,4,4,3,3,3, the LPT algorithm will schedule 5,3,3 on $m_1$, 5,3 on $m_2$, and 4,4 on $m_3$, giving a makespan of 11. For OPT, the lower bound is $max(5, 27/3) = 9$. We can achieve OPT by scheduling 5,4 on one machine, 5,4 on another machine, and 3,3,3 on the remaining machine.
 \newline
 \newline
 {\large2.} \textbf{Lemma 2.2} Let $U$ be the subset of nodes consisting of the nodes of $\{1,...,n\}$-$\{s,t\}$ that have odd degree in $T$ and the nodes in $\{s,t\}$ that have even degree in $T$. Then $U$ has an even number of nodes.
