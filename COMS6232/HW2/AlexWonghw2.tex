@@ -12,7 +12,7 @@
 \skipevenpage
 
 \problemNo{1}
-{\large a.} Consider an instance where we have two items x and y where $s_x = \epsilon$, $v_x = 2\epsilon$, $s_y = B$, $v_y =B$, and $\epsilon << 1$. The $v_i/s_i$ ratio of item x is 2 and item y is 1. Thus, the Greedy algorithm will always pick item x regardless of how large B is and regardless how small $\epsilon$ is. So as B gets larger and/or $\epsilon$ gets smaller, the approximation ratio of the algorithm will always increase, thus showing that the approximation ratio of Greedy is not bounded by any constant. \hfill\qed
+{\large a.} Consider an instance where we have two items x and y where $s_x = \epsilon$, $v_x = 2\epsilon$, $s_y = B$, $v_y =B$, and $\epsilon << 1$. The $v_i/s_i$ ratio of item x is 2 and item y is 1. Thus, the Greedy algorithm will always pick item x regardless of how large B is and regardless how small $\epsilon$ is. So as B gets larger and/or $\epsilon$ gets smaller, the approximation ratio of the algorithm will increase, thus showing that the approximation ratio of Greedy is not bounded by any constant. \hfill\qed
 \newline
 \newline
 {\large b.} \textbf{Theorem 1b} The Modified Greedy algorithm achieves approximation ratio 2.
@@ -24,10 +24,10 @@
 {\large a.} The lower bound for OPT is $max(max_i(p_i), \frac{\sum\limits_{i=1}^{n}p_i}{m})$. 
 \newline
 \newline
-For $m$ = 2 machines and 5 jobs with processing times 3,3,2,2,2, the LPT algorithm will schedule 3,2,2 on $m_1$ and 3,2 on $m_2$, giving a makespan of 7. For OPT, we know that a lower bound is max = $max(3, 12/2) = 6$. We can achieve OPT by scheduling 3,3 on one machine and 2,2,2 on the other machine.
+For $m$ = 2 machines and 5 jobs with processing times 3,3,2,2,2, the LPT algorithm will schedule 3,2,2 on $m_1$ and 3,2 on $m_2$, giving a makespan of 7. For OPT, we know that a lower bound is max = $max(3, 12/2) = 6$. We can achieve OPT by scheduling 2,2,2 on one machine and 3,3 on the other machine.
 \newline
 \newline
-For $m$ = 3 machines and 7 jobs with processing times 5,5,4,4,3,3,3, the LPT algorithm will schedule 5,3,3 on $m_1$, 5,3 on $m_2$, and 4,4 on $m_3$, giving a makespan of 11. For OPT, the lower bound is $max(5, 27/3) = 9$. We can achieve OPT by scheduling 5,4 on one machine, 5,4 on another machine, and 3,3,3 on the remaining machine.
+For $m$ = 3 machines and 7 jobs with processing times 5,5,4,4,3,3,3, the LPT algorithm will schedule 5,3,3 on $m_1$, 5,3 on $m_2$, and 4,4 on $m_3$, giving a makespan of 11. For OPT, the lower bound is $max(5, 27/3) = 9$. We can achieve OPT by scheduling 3,3,3 on one machine and 5,4 on each of the other two machines.
 \newline
 \newline
 {\large b.} If $p_n > OPT/3$, then $3p_n > OPT$, showing that no machine can process more than 2 jobs or else it would be $>$ OPT, which would contradict OPT being the optimal solution. From this, we know that $n \leq 2m$, thus the largest $m$ jobs will first get scheduled on each of the $m$ machines and the rest of the $n - m$ jobs will be assigned to the machine that has the least load at the point of assignment, thus showing that the LPT schedule is optimal. \hfill\qed
@@ -36,13 +36,13 @@ For $m$ = 3 machines and 7 jobs with processing times 5,5,4,4,3,3,3, the LPT alg
 {\large c.} \textbf{Theorem 2c} LPT achieves an approximation ratio of 4/3.
 \newline
 
-\textbf{Proof:} Let's define $j$ as the job that finishes last in the LPT schedule and $t_j$ as the span of time from time 0 until the time that job $j$ starts. We know that in the timespan of $t_j$, $m\cdot t_j$ amount of processing has been done. This amount of processing can't be more than the total amount of processing of all jobs, thus $m \cdot t_j \leq \sum\limits_{i=1}^{n}p_i \implies t_j \leq \frac{\sum\limits_{i=1}^{n}p_i}{m}$. As we saw earlier in part a, $\frac{\sum\limits_{i=1}^{n}p_i}{m}$ is essentially a lower bound for OPT, thus we can say that $t_j \leq OPT$. Then by adding $p_j$ to $t_j$, we get the makespan of the machine that has scheduled job $j$, and we can say that $t_j + p_j \leq OPT + p_j$. What the inequality tells us is that the processing time of job $j$ indicates how well the LPT algorithm performs. Referring to part b, if $p_j > OPT/3$, the LPT schedule is optimal. But in the worst case, if $p_j = OPT/3$, then LPT will give an $OPT + p_j = OPT + OPT/3 = 4/3 OPT$ makespan, thus showing that LPT achieves an approximation ratio of 4/3. \hfill\qed
+\textbf{Proof:} Let's define job $j$ as the job that finishes last in the LPT schedule and $t_j$ as the span of time from time 0 until the time that job $j$ starts. We know that in the timespan of $t_j$, $m\cdot t_j$ amount of processing has been done. This amount of processing can't be more than the total amount of processing of all jobs, thus $m \cdot t_j \leq \sum\limits_{i=1}^{n}p_i \implies t_j \leq \frac{\sum\limits_{i=1}^{n}p_i}{m}$. As we saw earlier in part $a$, $\frac{\sum\limits_{i=1}^{n}p_i}{m}$ is essentially a lower bound for OPT, thus we can say that $t_j \leq OPT$. Then by adding $p_j$ to $t_j$, we get the makespan of the machine that has scheduled job $j$, and we can say that $t_j + p_j \leq OPT + p_j$. What the inequality tells us is that the processing time of job $j$ indicates how well the LPT algorithm performs. Referring to part $b$, if $p_j > OPT/3$, the LPT schedule is optimal. But in the worst case, if $p_j = OPT/3$, then LPT will give an $OPT + p_j = OPT + OPT/3 = 4/3 OPT$ makespan, thus showing that LPT achieves an approximation ratio of 4/3. \hfill\qed
 \newline
 \newline
-{\large d.} \textbf{Lemma 2.4} cost($T$) + cost(blue edges) $\geq$ 2 $\cdot$ cost($M$).
+{\large d.} \textbf{Theorem 2d} The ratio of 4/3 of LPT is asymptotically tight as $m \rightarrow \infty$.
 \newline
 
-\textbf{Proof:} We first see that $T$ $\cup$ (blue edges of $P^*$) creates a connected Eulerian multigraph. We know this to be true because every vertex has an even degree. A Eulerian multigraph is essentially a multigraph that contains an Eulerian tour. Within a Eulerian tour, we know that we can create two disjoint perfect matchings of $U$ and the sum of their costs $\leq$ cost of the Eulerian tour due to triangle inequality. We also know that both of the disjoint perfect matchings can not have a cost $<$ cost($M$) or else $M$ can't be a minimum-cost perfect matching on $U$. Thus, $$2 \cdot cost(M) \leq cost(2\ disjoint\ perfect\ matchings) \leq cost(T) + cost(blue\ edges)$$ $$cost(T) + cost(blue\ edges) \geq 2 \cdot cost(M)$$ \hfill\qed
+\textbf{Proof:} We generalize the examples of part $a$: given $m$ machines, we have 3 jobs that have a processing time of $m$, and 2 jobs for each processing time $2m-1,...,m+1$ (if $2m-1 = m+1$, then there are only 2 jobs for both $2m-1$ and $m+1$) giving us a total of 2m+1 jobs. With LPT scheduling, we find that every machine will get scheduled two jobs with a total processing time of $3m-1$ with exception of the first machine that will get scheduled with 3 jobs with a total processing time of $3m-1+m = 4m-1$. Thus, the makespan with LPT scheduling is $4m-1$. For an optimal makespan $OPT$, we first schedule all 3 jobs with processing time $m$ on the first machine, and then use LPT scheduling for the rest of the jobs. This will give each machine a total processing time of $3m$, thus making the makespan of $OPT = 3m$. The figure below shows the makespan of LPT and OPT when m = 3:
 \newline
 \newline
 {\large5.} \textbf{Theorem 2.5} The variant of Christofides' algorithm achieves an approximation factor of 5/3 for the \textit{s-t path metric TSP} problem.
