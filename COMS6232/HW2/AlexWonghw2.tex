@@ -11,12 +11,13 @@
 \skipevenpage
 
 \problemNo{1}
-{\large1.}Consider an instance where we have two items: x and y where $s_x = \epsilon$, $v_x = 2\epsilon$, $s_y = B$ and $v_y =B$, thus giving the 
+{\large a.} Consider an instance where we have two items x and y where $s_x = \epsilon$, $v_x = 2\epsilon$, $s_y = B$, $v_y =B$, and $\epsilon << 1$. The $v_i/s_i$ ratio of item x is 2 and item y is 1. Thus, the Greedy algorithm will always pick item x regardless of how large B is and regardless how small $\epsilon$ is. So as B gets larger and/or $\epsilon$ gets smaller, the approximation ratio of the algorithm will always increase, thus showing that the approximation ratio of Greedy is not bounded by any constant. \hfill\qed
+\newline
+\newline
+{\large b.} \textbf{Theorem 1b} The Modified Greedy algorithm achieves approximation ratio 2.
+\newline
 
-It is obvious to see the OPT solution; the last 16 nodes of set L connect to a distinct node in set R, meaning that the OPT solution must contain at least 16 nodes. We also see that all 16 nodes of set R has edges to all the nodes in set L. This shows that the OPT solution would be selecting every node from set R. Thus, the approximation ratio of Greedy on this graph is 33/16 = 2.0625.
-\newline
-\newline
-{\large2.} Consider the graph G from part 1. We can say that set R contains $k^2$ nodes, all of degree $\leq$ k. We can partition set L into k sets, $L_1,...,L_k$, where each set $L_i$ contains $\lfloor$$\frac{k^2}{i}$$\rfloor$ nodes of degree $i$. From these sets, we see that $|L_1| = |R|, |L_2| = \frac{1}{2}|R|, |L_3| = \lfloor\frac{1}{3}|R|\rfloor$, and $|L_4| = \frac{1}{4}|R|$. Adding $R+\frac{1}{2}R+\lfloor\frac{1}{3}R\rfloor+\frac{1}{4}R$ forms the start of the harmonic series, which shows that $|L|\approx \ln{k}|R|$. Thus, this shows that the approximation ratio of Greedy is not bounded by any constant; rather, the approximation ratio is $\Omega(\log{n})$ where n is the number of nodes.
+\textbf{Proof:} We first assume that the items are ordered in a non-increasing fashion according to the ratio $v_i/s_i$. Let's call the first item that does not fit in the knapsack using the Greedy algorithm as item $m$. We know that item $m$'s $v_i/s_i$ ratio $\geq$ items $m+1,...,n$'s $v_i/s_i$ ratio. Thus, if we are able to fit some fraction of item $m$ so that it fills up to the capacity of the knapsack, that solution will be $\geq$ OPT. We can define the fraction of item $m$ that fits into the knapsack as $\alpha$ where $\alpha = (B - \sum\limits_{i=1}^{m-1} v_i) / s_m$. Thus, $OPT \leq (\sum\limits_{i=1}^{m-1} v_i) + \alpha v_m$. Since $\alpha$ is some fraction $\leq 1$, we can also say that: $$OPT \leq (\sum\limits_{i=1}^{m-1} v_i) + \alpha v_m \leq (\sum\limits_{i=1}^{m-1} v_i) + v_m$$ From the inequality above, $\sum\limits_{i=1}^{m-1} v_i$ or $v_m$ must be at least $OPT/2$, showing that the Modified Greedy algorithm will always get a solution at least $OPT/2$, thus achieving an approximation ratio 2. \hfill\qed
 
 \problemNo{2}
 {\large1.} \textbf{Lemma 2.1} Let $T$ be the minimum spanning tree of the weighted complete graph $G$. Then cost($T$) $\leq$ OPT, where OPT is the cost of the optimal \textit{s-t} path.
