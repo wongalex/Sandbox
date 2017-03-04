@@ -124,7 +124,7 @@ $$\frac{OPT}{w(S)} = \frac{w(Q)}{w(S)} \leq \frac{w(Q)}{w(Q) \cdot (1 - \frac{\e
 Thus showing that the approximation ratio is $1 + \epsilon$.
 \newline
 \newline
-\textbf{Conclusion:} We have provided a FPTAS by scaling and rounding the weights of each job, which resulted in a runtime polynomial in both $n$ and $1/\epsilon$ with an approximation ratio of $1 + \epsilon$.\hfill\qed
+\textbf{Conclusion:} We have provided a FPTAS for the Scheduling problem by scaling and rounding the weights of each job, which resulted in a runtime polynomial in both $n$ and $1/\epsilon$ with an approximation ratio of $1 + \epsilon$.\hfill\qed
 
 \problemNo{4}
 {\large a.} To get a pseudopolynomial algorithm for the Assembly problem, we utilize dynamic programming.
@@ -187,20 +187,21 @@ Applying the DP algorithm from part $a$ with these new costs $c'_{S(i)_x}$ and a
 \newline
 Let's define $Q$ as an optimal solution using the original costs $c_{S(i)_x}$ and $R$ as an optimal solution using the new costs $c'_{S(i)_x}$.
 \newline
-For each choice $S(i)_x$, we know that: $\frac{c_{S(i)_x}}{K} - 1 > c'_{S(i)_x} \geq \frac{c_{S(i)_x}}{K}$. This implies that: 
+For each choice $S(i)_x$, we know that: $\frac{c_{S(i)_x}}{K} + 1 > c'_{S(i)_x} \geq \frac{c_{S(i)_x}}{K}$. This implies that: 
 $$\frac{\sum\limits_{S(i)_x\epsilon R}c_{S(i)_x}}{K} + |R| > \sum\limits_{S(i)_x\epsilon R}c'_{S(i)_x} \geq \frac{\sum\limits_{S(i)_x\epsilon R}c_{S(i)_x}}{K}$$
 For OPT, we know that: 
 $$OPT = c(Q) = \sum\limits_{S(i)_x\epsilon Q}c_{S(i)_x} \ \text{which tells us} \ \frac{c(Q)}{K} + |Q| > c'(Q) \geq c'(R)$$ 
-$$\Longrightarrow \ c(Q) \leq K \cdot c'(R) + K \cdot |Q| \leq c(R) + K \cdot n$$
-$$\Longrightarrow \ c(Q) \leq c(S) + \frac{\epsilon}{2}C' \leq w(S) + \frac{\epsilon}{2}w(Q), \ \text{because} \ W' \leq w(Q)$$
+$$\Longrightarrow \ c(Q) \geq K \cdot c'(R) - K \cdot |Q| \geq c(R) - K \cdot k$$
+$$\Longrightarrow \ c(Q) \geq c(R) - \frac{\epsilon}{2}C' \geq c(R) - \frac{\epsilon}{2}\cdot\frac{c(Q)}{|Q|} = c(R) - \frac{\epsilon}{2}\cdot\frac{c(Q)}{k}, \ \text{because} \ C' \geq \frac{c(Q)}{k}$$
 From here, we can say that:
-$$w(Q) \leq w(S) + \frac{\epsilon}{2}w(Q)$$
-$$\Longrightarrow w(Q) - \frac{\epsilon}{2}w(Q) \leq w(S)$$
-$$\Longrightarrow w(Q) \cdot (1 - \frac{\epsilon}{2}) \leq w(S)$$
+$$c(Q) \geq c(R) - \frac{\epsilon}{2}\cdot \frac{c(Q)}{k}$$
+$$\Longrightarrow c(R) \leq c(Q) + \frac{\epsilon}{2k}c(Q)$$
+$$\Longrightarrow c(R) \leq c(Q) \cdot (1 + \frac{\epsilon}{2k})$$
 And since we are looking for the approximation ratio:
-$$\frac{OPT}{w(S)} = \frac{w(Q)}{w(S)} \leq \frac{w(Q)}{w(Q) \cdot (1 - \frac{\epsilon}{2})} = \frac{1}{1 - \frac{\epsilon}{2}} \leq 1 + \epsilon, \ \text{since} \ \ \epsilon \leq 1$$
-Thus showing that the approximation ratio is $1 + \epsilon$.
+$$\frac{OPT}{c(R)} = \frac{c(Q)}{c(R)} \geq \frac{c(Q)}{c(Q) \cdot (1 + \frac{\epsilon}{2k})} = \frac{1}{1 +\frac{\epsilon}{2k}} \geq 1 - \epsilon, \ \text{since} \ \ \epsilon \leq 1 \ \text{and} \ k \geq 1$$
+\newline
+Thus showing that the approximation ratio is $1 - \epsilon$.
 \newline
 \newline
-\textbf{Conclusion:} We have provided a FPTAS by scaling and rounding the weights of each job, which resulted in a runtime polynomial in both $n$ and $1/\epsilon$ with an approximation ratio of $1 + \epsilon$.\hfill\qed
+\textbf{Conclusion:} We have provided a FPTAS for the Assembly problem by scaling and rounding the weights of each choice, which resulted in a runtime polynomial in both $n$ and $1/\epsilon$ with an approximation ratio of $1 - \epsilon$.\hfill\qed
 \end{document}
