@@ -175,24 +175,24 @@ Let OPT be the minimum cost to assemble a product that meets the upper bound wei
   \item Since $C = \sum\limits_{i=1}^{k}max_x(c_{S(i)_x})$ for $x = 1,...,|S(i)|$, we can say that $C \leq kC'$.
   \item Assume, without loss of generality, that $\epsilon \leq 1$.
   \item Let $K = \epsilon C' / 2k$.
-  \item Now, for each choice $S(i)_x$, let $c'_{S(i)_x} = \lfloor\frac{c_{S(i)_x}}{K}\rfloor$
-  \item Then $WC' = max_j(w'_j) ,= \lfloor\frac{W'}{K}\rfloor = \lfloor\frac{W'}{\epsilon W'/2n}\rfloor = \lfloor\frac{2n}{\epsilon}\rfloor$
+  \item Now, for each choice $S(i)_x$, let $c'_{S(i)_x} = \lceil\frac{c_{S(i)_x}}{K}\rceil$
+  \item Then $C'' = max_i(max_x(c'_{S(i)_x})) ,= \lceil\frac{C'}{K}\rceil = \lceil\frac{C'}{\epsilon C'/2k}\rceil = \lceil\frac{2k}{\epsilon}\rceil$
 \end{itemize}
 \textbf{Runtime:} 
 \newline
-Applying the DP algorithm from part $b$ with these new weights $w'_j$ and a new total max weight of $nW''$, with everything else remaining the same, we get a runtime of $O(n\cdot(nW'')) = O(n\cdot(n\cdot\frac{2n}{\epsilon})) = O(n^3/\epsilon)$ which is a runtime that is both polynomial in $n$ and $1/\epsilon$.
+Applying the DP algorithm from part $a$ with these new costs $c'_{S(i)_x}$ and a new total max cost of $nC''$, with everything else remaining the same, we get a runtime of $$O(n\cdot(kC'')) = O(n\cdot(k\cdot\frac{2k}{\epsilon})) \leq O(n\cdot(n\cdot\frac{2n}{\epsilon})) = O(n^3/\epsilon)$$ ($k \leq n$ since each set of choices $S(i)$ must contain at least one choice) which is a runtime that is both polynomial in $n$ and $1/\epsilon$.
 \newline
 \newline
 \textbf{Approximation Ratio:} 
 \newline
-Let's define $Q$ as an optimal solution using the original weights and $S$ as an optimal solution using the new weights $w'_j$.
+Let's define $Q$ as an optimal solution using the original costs $c_{S(i)_x}$ and $R$ as an optimal solution using the new costs $c'_{S(i)_x}$.
 \newline
-For each job $j$, we know that: $\frac{w_j}{K} - 1 < w'_j \leq \frac{w_j}{K}$. This implies that: 
-$$\frac{\sum\limits_{j\epsilon S}w_j}{K} - |S| < \sum\limits_{j\epsilon S}w'_j \leq \frac{\sum\limits_{j\epsilon S}w_j}{K}$$
+For each choice $S(i)_x$, we know that: $\frac{c_{S(i)_x}}{K} - 1 > c'_{S(i)_x} \geq \frac{c_{S(i)_x}}{K}$. This implies that: 
+$$\frac{\sum\limits_{S(i)_x\epsilon R}c_{S(i)_x}}{K} + |R| > \sum\limits_{S(i)_x\epsilon R}c'_{S(i)_x} \geq \frac{\sum\limits_{S(i)_x\epsilon R}c_{S(i)_x}}{K}$$
 For OPT, we know that: 
-$$OPT = w(Q) = \sum\limits_{j\epsilon Q}w_j \ \text{which tells us} \ \frac{w(Q)}{K} - |Q| < w'(Q) \leq w'(S)$$ 
-$$\Longrightarrow \ w(Q) \leq K \cdot w'(S) + K \cdot |Q| \leq w(S) + K \cdot n$$
-$$\Longrightarrow \ w(Q) \leq w(S) + \frac{\epsilon}{2}W' \leq w(S) + \frac{\epsilon}{2}w(Q), \ \text{because} \ W' \leq w(Q)$$
+$$OPT = c(Q) = \sum\limits_{S(i)_x\epsilon Q}c_{S(i)_x} \ \text{which tells us} \ \frac{c(Q)}{K} + |Q| > c'(Q) \geq c'(R)$$ 
+$$\Longrightarrow \ c(Q) \leq K \cdot c'(R) + K \cdot |Q| \leq c(R) + K \cdot n$$
+$$\Longrightarrow \ c(Q) \leq c(S) + \frac{\epsilon}{2}C' \leq w(S) + \frac{\epsilon}{2}w(Q), \ \text{because} \ W' \leq w(Q)$$
 From here, we can say that:
 $$w(Q) \leq w(S) + \frac{\epsilon}{2}w(Q)$$
 $$\Longrightarrow w(Q) - \frac{\epsilon}{2}w(Q) \leq w(S)$$
