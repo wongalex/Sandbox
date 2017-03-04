@@ -67,7 +67,7 @@ Thus, we see the ratio of $LPT/OPT = (4m - 1) / 3m = \frac{4m}{3m} - \frac{1}{3m
 \textbf{Preprocessing:} We first order the jobs by nondecreasing due date order, which takes $O(nlogn)$ time, where n is the number of jobs to be scheduled. It will not affect the overall runtime since the overall runtime of the algorithm is $O(nW)$ where $W$ has a lower bound of $n$ since each job has weight is a positive integer, making $O(nW) \geq O(n^2)$, which is $>$ $O(nlogn)$.
 \newline
 \newline
-\textbf{DP Initialization:} Let A be a table that stores values of minimum completion times, $A(w, j)$ represent the minimum completion time of a subset of jobs $1,...,j$ that are on-time and adding all on-time jobs' weights gives the total weight of $w$. If there is no feasible subset, then $A(w,j) = \infty$. We initalize $A(0,j) = 0$, for all $j = 0,...,n$ because to get a total weight of 0, we do not need to have any on-time jobs, thus having a minimum completion time of 0. We initialize $A(w,0) = \infty$, for all $w = 1,...,W$ where $W = \sum\limits_{j}w_j$ because it is not feasible to get some total weight $> 0$ without having a subset of jobs to schedule.
+\textbf{DP Initialization:} Let A be a table that stores values of minimum completion times. Let $A(w, j)$ represent the minimum completion time of a subset of jobs $1,...,j$ that are on-time and adding all on-time jobs' weights gives the total weight of $w$. If there is no feasible subset, then $A(w,j) = \infty$. We initalize $A(0,j) = 0$, for all $j = 0,...,n$ because to get a total weight of 0, we do not need to have any on-time jobs, thus having a minimum completion time of 0. We initialize $A(w,0) = \infty$, for all $w = 1,...,W$ where $W = \sum\limits_{j}w_j$ because it is not feasible to get some total weight $> 0$ without having a subset of jobs to schedule. Because we are doing constant work on $n + W$ entries of table A, DP initialization has a runtime of $O(n + W)$.
 \newline
 \newline
 \textbf{DP Recursion:} 
@@ -76,20 +76,22 @@ For $1 \leq w \leq W, \ 1 \leq j \leq n$, if job $j$ is not an on-time job, we k
 \newline
 \newline
 For $1 \leq w \leq W, \ \ 1 \leq j \leq n$:
-\begin{equation}
+\begin{equation*}
   A(w,j) =
   \begin{cases}
     min(A(w, j-1), A(w-w_j, j-1) + p_j) & \text{if $w \geq w_j$ and $A(w-w_j, j-1) + p_j \leq d_j$} \\
     A(w, j-1) & \text{otherwise}
   \end{cases}
-\end{equation}
+\end{equation*}
+For the runtime of DP recursion, we see that we do a constant amount of work for $n\cdot W$ entries of table $A$, thus the runtime of DP recursion is $O(nW)$.
+\newline
 \newline
 \textbf{DP Answer:}
 \newline
-Let OPT be the maximum total weight of jobs that complete by their due date. After filling out table A, the maximum weight of on-time jobs is: $$OPT = max\{ w \ | \ A(w,n) \neq \infty \}$$ which takes $O(n)$ running time. Thus, the total running time is $$O(nlogn) + O(nW) + O(n) = O(nW)$$ \hfill\qed
+Let OPT be the maximum total weight of jobs that complete by their due date. After filling out table A, the maximum weight of on-time jobs is: $$OPT = max\{ w \ | \ A(w,n) \neq \infty \}$$ which takes $O(W)$ running time. Thus, the total running time is $$O(nlogn) + O(n + W) + O(nW) + O(W) = O(nW)$$ \hfill\qed
 \newline
 \newline
-{\large c.} \textbf{FPTAS:}
+{\large c.} \textbf{FPTAS for Scheduling Problem:}
 \begin{itemize}
   \item Lets first define $W' = max_j (w_j),$ where $j = 1,...,n$.
   \item Since $W = \sum\limits_{j=1}^{n}w_j$, we can say that $W \leq nW'$.
@@ -100,7 +102,85 @@ Let OPT be the maximum total weight of jobs that complete by their due date. Aft
 \end{itemize}
 \textbf{Runtime:} 
 \newline
-Applying the DP algorithm from part $b$ with these new values $w'_j$ and a new total max weight of $nW''$, with everything else remaining the same, we get a runtime of $O(n\cdot(nW'')) = O(n\cdot(n\cdot\frac{2n}{\epsilon})) = O(n^3/\epsilon)$ which is a runtime that is both polynomial in $n$ and $1/\epsilon$.
+Applying the DP algorithm from part $b$ with these new weights $w'_j$ and a new total max weight of $nW''$, with everything else remaining the same, we get a runtime of $O(n\cdot(nW'')) = O(n\cdot(n\cdot\frac{2n}{\epsilon})) = O(n^3/\epsilon)$ which is a runtime that is both polynomial in $n$ and $1/\epsilon$.
+\newline
+\newline
+\textbf{Approximation Ratio:} 
+\newline
+Let's define $Q$ as an optimal solution using the original weights and $S$ as an optimal solution using the new weights $w'_j$.
+\newline
+For each job $j$, we know that: $\frac{w_j}{K} - 1 < w'_j \leq \frac{w_j}{K}$. This implies that: 
+$$\frac{\sum\limits_{j\epsilon S}w_j}{K} - |S| < \sum\limits_{j\epsilon S}w'_j \leq \frac{\sum\limits_{j\epsilon S}w_j}{K}$$
+For OPT, we know that: 
+$$OPT = w(Q) = \sum\limits_{j\epsilon Q}w_j \ \text{which tells us} \ \frac{w(Q)}{K} - |Q| < w'(Q) \leq w'(S)$$ 
+$$\Longrightarrow \ w(Q) \leq K \cdot w'(S) + K \cdot |Q| \leq w(S) + K \cdot n$$
+$$\Longrightarrow \ w(Q) \leq w(S) + \frac{\epsilon}{2}W' \leq w(S) + \frac{\epsilon}{2}w(Q), \ \text{because} \ W' \leq w(Q)$$
+From here, we can say that:
+$$w(Q) \leq w(S) + \frac{\epsilon}{2}w(Q)$$
+$$\Longrightarrow w(Q) - \frac{\epsilon}{2}w(Q) \leq w(S)$$
+$$\Longrightarrow w(Q) \cdot (1 - \frac{\epsilon}{2}) \leq w(S)$$
+And since we are looking for the approximation ratio:
+$$\frac{OPT}{w(S)} = \frac{w(Q)}{w(S)} \leq \frac{w(Q)}{w(Q) \cdot (1 - \frac{\epsilon}{2})} = \frac{1}{1 - \frac{\epsilon}{2}} \leq 1 + \epsilon, \ \text{since} \ \ \epsilon \leq 1$$
+Thus showing that the approximation ratio is $1 + \epsilon$.
+\newline
+\newline
+\textbf{Conclusion:} We have provided a FPTAS by scaling and rounding the weights of each job, which resulted in a runtime polynomial in both $n$ and $1/\epsilon$ with an approximation ratio of $1 + \epsilon$.\hfill\qed
+
+\problemNo{4}
+{\large a.} To get a pseudopolynomial algorithm for the Assembly problem, we utilize dynamic programming.
+\newline
+\newline
+\textbf{DP Assembly Algorithm}
+\newline
+\newline
+\textbf{Preprocessing:} We first define $n$ as the number of all choices of all components, which equates to $\sum\limits_{i=1}^{k}|S(i)|$. We then define a max cost $C$ for our DP algorithm to run on by summing up the max cost of a choice from each set $S(i)$ choices where $i = 1,...,k$ . Thus, $C = \sum\limits_{i=1}^{k}max_x(S(i)_x)$ for $x = 1,...,|S(i)|$. This takes $O(n)$ runtime since we have to iterate through all choices of all components, which we have defined as $n$.
+\newline
+\newline
+\textbf{DP Initialization:} Let A be a table that stores values of minimum weights. Let $A(c, i)$ represent the minimum weight of a subset of components $1,...,i$ that have a weight below $W$ and adding all subset of components' costs gives the total cost of $c$. If there is no feasible subset, then $A(c,i) = \infty$. We first initialize $A(0,0) = 0$ because having 0 components with 0 costs means a 0 weight. We then initialize $A(0,i) = \infty$, for all $i = 1,...,k$ because to we can not get a total cost of 0 for any number of components $> 0$ since costs are positive integers. We initialize $A(c,0) = \infty$, for all $c = 1,...,C$ because it is not feasible to get some total cost $> 0$ without having some subset of components to work with. Because we are doing constant work on $k + C$ entries of table A, and $k \leq n$ since each set of choices $S(i)$ must contain at least one choice, DP initialization has a runtime of $O(n + C)$.
+\newline
+\newline
+\textbf{DP Recursion:} 
+\newline
+For $1 \leq c \leq C, \ 1 \leq i \leq k$, we iterate through the set of choices $S(i)$, where each choice will be denoted $S(i)_x$, $x = 1,...,|S(i)|$, to find the minimum weight choice that doesn't exceed the upper bound weight W when the weight $w_{S(i)_x}$ is added to the subset of components $1,...i-1$ and where the cost of the subset of components $1...,i-1$ has cost $c - c_{S(i)_x}$ so that if choice $S(i)_x$ is included, the cost will equal $c$. The last constraint is that $A(c-c_{S(i)_x}, i-1) \neq \infty$ because that signifies that there wasn't a feasible subset from components $1,...i-1$ so there is no point to add component $S(i)_x$ since there wasn't any feasible subset before. If no choice $S(i)_x$ meets the constraints, then $A(c,i) = \infty$. The following equation shows the recursion:
+\newline
+\newline
+For $1 \leq c \leq C, \ \ 1 \leq i \leq k$:
+\begin{equation*}
+  A(c,i) = min
+  \begin{cases}
+    A(c-c_{S(i)_1}, i-1) + w_{S(i)_1} & \text{if $c \geq c_{S(i)_1}$,} \\
+    . & \text{$A(c-c_{S(i)_1}, i-1) \neq \infty$ ,} \\
+    . & \text{and $A(c-c_{S(i)_1}, i-1) + w_{S(i)_1} \leq W$} \\
+    . \\
+    . \\
+    A(c-c_{S(i)_{|S(i)|}}, i-1) + w_{S(i)_{|S(i)|}} & \text{if $c \geq c_{S(i)_{|S(i)|}}$,} \\
+     & \text{$A(c-c_{S(i)_{|S(i)|}}, i-1) \neq \infty$} \\
+     & \text{and $A(c-c_{S(i)_{|S(i)|}}, i-1) + w_{S(i)_{|S(i)|}} \leq W$} \\
+     \\
+    \infty & \text{otherwise}
+  \end{cases}
+\end{equation*}
+\newline
+For the runtime of DP recursion, we see that we do $\sum\limits_{i=1}^{k}|S(i)| = n$ amount of work for $C$ number of rows of table $A$, thus the runtime of DP recursion is $O(nC)$.
+\newline
+\newline 
+\textbf{DP Answer:}
+\newline
+Let OPT be the minimum cost to assemble a product that meets the upper bound weight W. After filling out table A, the minimum cost to assemble a product is: $$OPT = min\{ c \ | \ A(c,i) \}$$ If we find that $OPT = \infty$, then that means there was no combination of components that could make a product with a weight $\leq W$. The running time to find OPT takes $O(C)$. Thus, the total running time is $$O(n) + O(n + C) + O(nC) + O(C) = O(nC)$$ which shows that the DP algorithm is a pseudopolynomial algorithm for the Assembly problem. \hfill\qed
+\newline
+\newline
+{\large b.} \textbf{FPTAS for Assembly Problem:}
+\begin{itemize}
+  \item Lets first define $C'$ as the maximum cost of any choice of any component $S(i)_x$, where $i = 1,...,k$ and $x = 1,...,|S(i)|$. Thus $C' = max_i(max_x(c_{S(i)_x}))$.
+  \item Since $C = \sum\limits_{i=1}^{k}max_x(c_{S(i)_x})$ for $x = 1,...,|S(i)|$, we can say that $C \leq kC'$.
+  \item Assume, without loss of generality, that $\epsilon \leq 1$.
+  \item Let $K = \epsilon C' / 2k$.
+  \item Now, for each choice $S(i)_x$, let $c'_{S(i)_x} = \lfloor\frac{c_{S(i)_x}}{K}\rfloor$
+  \item Then $WC' = max_j(w'_j) ,= \lfloor\frac{W'}{K}\rfloor = \lfloor\frac{W'}{\epsilon W'/2n}\rfloor = \lfloor\frac{2n}{\epsilon}\rfloor$
+\end{itemize}
+\textbf{Runtime:} 
+\newline
+Applying the DP algorithm from part $b$ with these new weights $w'_j$ and a new total max weight of $nW''$, with everything else remaining the same, we get a runtime of $O(n\cdot(nW'')) = O(n\cdot(n\cdot\frac{2n}{\epsilon})) = O(n^3/\epsilon)$ which is a runtime that is both polynomial in $n$ and $1/\epsilon$.
 \newline
 \newline
 \textbf{Approximation Ratio:} 
