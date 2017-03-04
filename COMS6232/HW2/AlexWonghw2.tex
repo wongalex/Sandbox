@@ -107,6 +107,20 @@ Applying the DP algorithm from part $b$ with these new values $w'_j$ and a new t
 \newline
 Let's define $Q$ as an optimal solution using the original weights and $S$ as an optimal solution using the new weights $w'_j$.
 \newline
-For each job $j$, we know that: $\frac{w_j}{K} - 1 < w'_j \leq \frac{w_j}{K}$. This implies that: $$\frac{\sum\limits_{j\epsilon S}w_j}{K} - |S| < \sum\limits_{j\epsilon S}w'_j \leq \frac{\sum\limits_{j\epsilon S}w_j}{K}$$
-\newline 
+For each job $j$, we know that: $\frac{w_j}{K} - 1 < w'_j \leq \frac{w_j}{K}$. This implies that: 
+$$\frac{\sum\limits_{j\epsilon S}w_j}{K} - |S| < \sum\limits_{j\epsilon S}w'_j \leq \frac{\sum\limits_{j\epsilon S}w_j}{K}$$
+For OPT, we know that: 
+$$OPT = w(Q) = \sum\limits_{j\epsilon Q}w_j \ \text{which tells us} \ \frac{w(Q)}{K} - |Q| < w'(Q) \leq w'(S)$$ 
+$$\Longrightarrow \ w(Q) \leq K \cdot w'(S) + K \cdot |Q| \leq w(S) + K \cdot n$$
+$$\Longrightarrow \ w(Q) \leq w(S) + \frac{\epsilon}{2}W' \leq w(S) + \frac{\epsilon}{2}w(Q), \ \text{because} \ W' \leq w(Q)$$
+From here, we can say that:
+$$w(Q) \leq w(S) + \frac{\epsilon}{2}w(Q)$$
+$$\Longrightarrow w(Q) - \frac{\epsilon}{2}w(Q) \leq w(S)$$
+$$\Longrightarrow w(Q) \cdot (1 - \frac{\epsilon}{2}) \leq w(S)$$
+And since we are looking for the approximation ratio:
+$$\frac{OPT}{w(S)} = \frac{w(Q)}{w(S)} \leq \frac{w(Q)}{w(Q) \cdot (1 - \frac{\epsilon}{2})} = \frac{1}{1 - \frac{\epsilon}{2}} \leq 1 + \epsilon, \ \text{since} \ \ \epsilon \leq 1$$
+Thus showing that the approximation ratio is $1 + \epsilon$.
+\newline
+\newline
+\textbf{Conclusion:} We have provided a FPTAS by scaling and rounding the weights of each job, which resulted in a runtime polynomial in both $n$ and $1/\epsilon$ with an approximation ratio of $1 + \epsilon$.\hfill\qed
 \end{document}
