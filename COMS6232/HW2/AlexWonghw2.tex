@@ -72,7 +72,7 @@ Thus, we see the ratio of $LPT/OPT = (4m - 1) / 3m = \frac{4m}{3m} - \frac{1}{3m
 \newline
 \textbf{DP Recursion:} 
 \newline
-For $1 \leq w \leq W, \ \ 1 \leq j \leq n$, if job $j$ is not an on-time job, we know then that the subset of jobs $1,...,j-1$ offers the minimum completion time at that weight w. If job $j$ is an on-time job, as in $A(w-w_j, j-1) + p_j \leq d_j$, then we take the minimum completion time between the minimum completion time of subset of jobs $1,...,j-1$ at weight w or the minimum completion time of subset of jobs $1,...,j-1$ at weight $w-w_j$ since jobs $1,...,j-1$ will have at least $w-w_j$ weight, added with the processing time $p_j$ of job $j$. The following equation shows the recursion:
+For $1 \leq w \leq W, \ 1 \leq j \leq n$, if job $j$ is not an on-time job, we know then that the subset of jobs $1,...,j-1$ offers the minimum completion time at that weight w. If job $j$ is an on-time job, as in $A(w-w_j, j-1) + p_j \leq d_j$, then we take the minimum completion time between the minimum completion time of subset of jobs $1,...,j-1$ at weight w or the minimum completion time of subset of jobs $1,...,j-1$ at weight $w-w_j$ since jobs $1,...,j-1$ will have at least $w-w_j$ weight, added with the processing time $p_j$ of job $j$. The following equation shows the recursion:
 \newline
 \newline
 For $1 \leq w \leq W, \ \ 1 \leq j \leq n$:
@@ -87,4 +87,26 @@ For $1 \leq w \leq W, \ \ 1 \leq j \leq n$:
 \textbf{DP Answer:}
 \newline
 Let OPT be the maximum total weight of jobs that complete by their due date. After filling out table A, the maximum weight of on-time jobs is: $$OPT = max\{ w \ | \ A(w,n) \neq \infty \}$$ which takes $O(n)$ running time. Thus, the total running time is $$O(nlogn) + O(nW) + O(n) = O(nW)$$ \hfill\qed
+\newline
+\newline
+{\large c.} \textbf{FPTAS:}
+\begin{itemize}
+  \item Lets first define $W' = max_j (w_j),$ where $j = 1,...,n$.
+  \item Since $W = \sum\limits_{j=1}^{n}w_j$, we can say that $W \leq nW'$.
+  \item Assume, without loss of generality, that $\epsilon \leq 1$.
+  \item Let $K = \epsilon W' / 2n$.
+  \item Now, for each job $j$, let $w'_j = \lfloor\frac{w_j}{K}\rfloor$
+  \item Then $W'' = max_j(w'_j) ,= \lfloor\frac{W'}{K}\rfloor = \lfloor\frac{W'}{\epsilon W'/2n}\rfloor = \lfloor\frac{2n}{\epsilon}\rfloor$
+\end{itemize}
+\textbf{Runtime:} 
+\newline
+Applying the DP algorithm from part $b$ with these new values $w'_j$ and a new total max weight of $nW''$, with everything else remaining the same, we get a runtime of $O(n\cdot(nW'')) = O(n\cdot(n\cdot\frac{2n}{\epsilon})) = O(n^3/\epsilon)$ which is a runtime that is both polynomial in $n$ and $1/\epsilon$.
+\newline
+\newline
+\textbf{Approximation Ratio:} 
+\newline
+Let's define $Q$ as an optimal solution using the original weights and $S$ as an optimal solution using the new weights $w'_j$.
+\newline
+For each job $j$, we know that: $\frac{w_j}{K} - 1 < w'_j \leq \frac{w_j}{K}$. This implies that: $$\frac{\sum\limits_{j\epsilon S}w_j}{K} - |S| < \sum\limits_{j\epsilon S}w'_j \leq \frac{\sum\limits_{j\epsilon S}w_j}{K}$$
+\newline 
 \end{document}
