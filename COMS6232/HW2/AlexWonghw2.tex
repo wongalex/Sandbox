@@ -1,5 +1,8 @@
 \documentclass[oneside]{homework} %%Change `twoside' to `oneside' if you are printing only on the one side of each sheet.
 \usepackage{amsmath}
+\usepackage{amssymb,mathtools}
+\usepackage{graphicx}
+\graphicspath{}
 
 \studname{Alex Wong}
 \studmail{asw2181@columbia.edu}
@@ -42,22 +45,46 @@ For $m$ = 3 machines and 7 jobs with processing times 5,5,4,4,3,3,3, the LPT alg
 {\large d.} \textbf{Theorem 2d} The ratio of 4/3 of LPT is asymptotically tight as $m \rightarrow \infty$.
 \newline
 
-\textbf{Proof:} We generalize the examples of part $a$: given $m$ machines, we have 3 jobs that have a processing time of $m$, and 2 jobs for each processing time $2m-1,...,m+1$ (if $2m-1 = m+1$, then there are only 2 jobs for both $2m-1$ and $m+1$) giving us a total of 2m+1 jobs. With LPT scheduling, we find that every machine will get scheduled two jobs with a total processing time of $3m-1$ with exception of the first machine that will get scheduled with 3 jobs with a total processing time of $3m-1+m = 4m-1$. Thus, the makespan with LPT scheduling is $4m-1$. For an optimal makespan $OPT$, we first schedule all 3 jobs with processing time $m$ on the first machine, and then use LPT scheduling for the rest of the jobs. This will give each machine a total processing time of $3m$, thus making the makespan of $OPT = 3m$. The figure below shows the makespan of LPT and OPT when m = 3:
+\textbf{Proof:} We generalize the examples of part $a$: given $m$ machines, we have 3 jobs that have a processing time of $m$, and 2 jobs for each processing time $2m-1,...,m+1$ (if $2m-1 = m+1$, then there are only 2 jobs for both $2m-1$ and $m+1$) giving us a total of 2m+1 jobs. With LPT scheduling, we find that every machine will get scheduled two jobs with a total processing time of $3m-1$ with exception of the first machine that will get scheduled with 3 jobs with a total processing time of $3m-1+m = 4m-1$. Thus, the makespan with LPT scheduling is $4m-1$. For an optimal makespan $OPT$, we first schedule all 3 jobs with processing time $m$ on the first machine, and then use LPT scheduling for the rest of the jobs. This will give each machine a total processing time of $3m$, thus making the makespan of $OPT = 3m$. Without loss of generality, the figure below illustrates the makespan of LPT and $OPT$ of the example from part $a$ when $m = 3$:
+\begin{figure}[h]
+\centering
+\includegraphics{2d1}
+\caption{Makespan of LPT = 4m - 1, Makespan of OPT = 3m}
+\end{figure}
 \newline
-\newline
-{\large5.} \textbf{Theorem 2.5} The variant of Christofides' algorithm achieves an approximation factor of 5/3 for the \textit{s-t path metric TSP} problem.
-\newline
+Thus, we see the ratio of $LPT/OPT = (4m - 1) / 3m = \frac{4m}{3m} - \frac{1}{3m} = \frac{4}{3} - \frac{1}{3m}$, showing that the approximation ratio 4/3 is asymptotically tight as $m \rightarrow \infty$. \hfill\qed
 
-\textbf{Proof:} Combining our conclusions from Lemma 2.3 and 2.4, we can say that: 
-\begin{equation} \label{eq:1} 
-cost(T) + cost(blue\ edges) + cost(red\ edges) \geq 3 \cdot cost(M)
-\end{equation} 
-We also know that $cost(blue\ edges) + cost(red\ edges) = P^* = OPT$ and from Lemma 2.1 that $cost(T) \leq OPT$. Thus, we can modify equation 1 to be: $$cost(T) + OPT \geq 3 \cdot cost(M)$$ $$2 \cdot OPT \geq 3 \cdot cost(M)$$
-\begin{equation} \label{eq:2} 
-cost(M) \leq 2/3\ OPT
+\problemNo{3}
+{\large a.} \textbf{Proof:} An optimal schedule will have all on-time jobs complete before all late jobs because the objective is to schedule jobs to maximize the total weight of the jobs that complete by their due date; any late jobs' weight will not count towards the total weight,  essentially having a weight of 0 in the optimal schedule since they are late. We can also equally reframe the objective of maximizing weight of on-time jobs to minimizing weight of late jobs. By ordering jobs in an earliest due date order, we can achieve minimizing weight of late jobs, which means maximizing the total weight of on-time jobs, thus showing that an optimal schedule has all on-time jobs complete before late jobs and on-time jobs complete in an earliest due date order. \hfill\qed
+\newline
+\newline
+{\large b.} There are $n$ jobs where job $j$ has processing time $p_j$, a weight $w_j$, and a due date $d_j$, where $j = 1,...,n$. Let $W = \sum\limits_{j}w_j$ which signifies the maximum possible value an optimal schedule can achieve, where every job completes on time. We use the following Dynamic Programming algorithm to compute the optimal schedule with a maximum total weight of jobs that complete by their due date:
+\newline
+\newline
+\textbf{DP Scheduling Algorithm}
+\newline
+\newline
+\textbf{Preprocessing:} We first order the jobs by nondecreasing due date order, which takes $O(nlogn)$ time, where n is the number of jobs to be scheduled. It will not affect the overall runtime since the overall runtime of the algorithm is $O(nW)$ where $W$ has a lower bound of $n$ since each job has weight is a positive integer, making $O(nW) \geq O(n^2)$, which is $>$ $O(nlogn)$.
+\newline
+\newline
+\textbf{DP Initialization:} Let A be a table that stores values of minimum completion times, $A(w, j)$ represent the minimum completion time of a subset of jobs $1,...,j$ that are on-time and adding all on-time jobs' weights gives the total weight of $w$. If there is no feasible subset, then $A(w,j) = \infty$. We initalize $A(0,j) = 0$, for all $j = 0,...,n$ because to get a total weight of 0, we do not need to have any on-time jobs, thus having a minimum completion time of 0. We initialize $A(w,0) = \infty$, for all $w = 1,...,W$ where $W = \sum\limits_{j}w_j$ because it is not feasible to get some total weight $> 0$ without having a subset of jobs to schedule.
+\newline
+\newline
+\textbf{DP Recursion:} 
+\newline
+For $1 \leq w \leq W, \ \ 1 \leq j \leq n$, if job $j$ is not an on-time job, we know then that the subset of jobs $1,...,j-1$ offers the minimum completion time at that weight w. If job $j$ is an on-time job, as in $A(w-w_j, j-1) + p_j \leq d_j$, then we take the minimum completion time between the minimum completion time of subset of jobs $1,...,j-1$ at weight w or the minimum completion time of subset of jobs $1,...,j-1$ at weight $w-w_j$ since jobs $1,...,j-1$ will have at least $w-w_j$ weight, added with the processing time $p_j$ of job $j$. The following equation shows the recursion:
+\newline
+\newline
+For $1 \leq w \leq W, \ \ 1 \leq j \leq n$:
+\begin{equation}
+  A(w,j) =
+  \begin{cases}
+    min(A(w, j-1), A(w-w_j, j-1) + p_j) & \text{if $w \geq w_j$ and $A(w-w_j, j-1) + p_j \leq d_j$} \\
+    A(w, j-1) & \text{otherwise}
+  \end{cases}
 \end{equation}
-Adding cost($T$) to both sides of equation 2 and using Lemma 2.1 that $cost(T) \leq OPT$, we finally get: $$cost(T) + cost(M) \leq cost(T) + 2/3\ OPT$$ $$cost(T) + cost(M) \leq OPT + 2/3\ OPT$$ $$cost(T) + cost(M) \leq 5/3\ OPT$$
-Thus showing that the cost of the path computed by the variant of Christofides' algorithm is at most 5/3 times the cost of the optimal path. \hfill\qed
-\newpage
-{\large6.}
+\newline
+\textbf{DP Answer:}
+\newline
+Let OPT be the maximum total weight of jobs that complete by their due date. After filling out table A, the maximum weight of on-time jobs is: $$OPT = max\{ w \ | \ A(w,n) \neq \infty \}$$ which takes $O(n)$ running time. Thus, the total running time is $$O(nlogn) + O(nW) + O(n) = O(nW)$$ \hfill\qed
 \end{document}
