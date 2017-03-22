@@ -166,7 +166,7 @@ For the runtime of DP recursion, we see that we do $\sum\limits_{i=1}^{k}|S(i)| 
 \newline 
 \textbf{DP Answer:}
 \newline
-Let OPT be the minimum cost to assemble a product that meets the upper bound weight W. After filling out table A, the minimum cost to assemble a product is: $$OPT = min\{ c \ | \ A(c,i) \}$$ If we find that $OPT = \infty$, then that means there was no combination of components that could make a product with a weight $\leq W$. The running time to find OPT takes $O(C)$. Thus, the total running time is $$O(n) + O(n + C) + O(nC) + O(C) = O(nC)$$ which shows that the DP algorithm is a pseudopolynomial algorithm for the Assembly problem. \hfill\qed
+Let OPT be the minimum cost to assemble a product that meets the upper bound weight W. After filling out table A, the minimum cost to assemble a product is: $$OPT = min\{ c \ | \ A(c,k) \}$$ If we find that $OPT = \infty$, then that means there was no combination of components that could make a product with a weight $\leq W$. The running time to find OPT takes $O(C)$. Thus, the total running time is $$O(n) + O(n + C) + O(nC) + O(C) = O(nC)$$ which shows that the DP algorithm is a pseudopolynomial algorithm for the Assembly problem. \hfill\qed
 \newline
 \newline
 {\large b.} \textbf{FPTAS for Assembly Problem:}
