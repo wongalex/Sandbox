@@ -15,13 +15,34 @@
 \skipevenpage
 
 \problemNo{1}
-{\large a.} \textbf{Lemma 1a} There is always a directed cut that contains at least $1/4$ of the edges.
+{\large a.} For $i = 1,...,|N|$ we assign node $i$ to set $S$ with probability $1/2$ and to set $N-S$ with probability $1/2$. For each directed edge $(i, j)$, let $Z_{(i,j)} = 1$ if $(i, j) \in$ directed cut from S to N-S, else 0 otherwise. Thus, we get the equation: $$E[Z_{(i,j)}] = P[(i,j) \in \text{directed cut from S to N-S}]$$ $$= P[i \in S, j \in N-S] = P[i \in  S]P[j \in N-S] = 1/2 \cdot 1/2 = 1/4$$ \hfill\qed
 \newline
+\newline
+{\large b.} Deterministic Algorithm (MCE) for the Maximum Directed Cut problem:
+\newline
+We first define $\alpha$ as the deterministic assignment of nodes $x_i$, $i = 1,...,|N|$, either in set $S$ or in set $N-S$. At the beginning of the algorithm, $\alpha = \emptyset$. The following is the MCE algorithm:
+\newline
+For $i = 1,...,|N|$,  \newline
 
-\textbf{Proof:} For $i = 1,...,|N|$ we assign node $i$ to set $S$ with probability $1/2$ and to set $N-S$ with probability $1/2$. For each directed edge $(i, j)$, let $X_{(i,j)} = 1$ if $(i, j) \in$ directed cut from S to N-S, else 0 otherwise. Thus, we get the equation: $$E[X_{(i,j)}] = P[(i,j) \in \text{directed cut from S to N-S}] = P[i \in S, j \in N-S] = 1/4$$ \hfill\qed
+if $E[Z \mid \alpha_{i-1} \cup \{x_i \in S\}] \geq E[Z \mid \alpha_{i-1} \cup \{x_i \in N-S\}]$  \newline
+
+\quad \quad then $\alpha = \alpha \cup \{x_i \in S\}$ \newline
+
+\quad \quad else $\alpha = \alpha \cup \{x_i \in N-S\}$ \newline
 \newline
+After the algorithm runs, $\alpha$ will contain the assignment of the nodes that has a directed cut with at least $1/4$ of the edges. How $E[Z]$ is determined is as follows: \newline
+For $1 \leq i \leq |N|$:
+\begin{equation*}
+  E[Z \mid \alpha_i] = max
+  \begin{cases}
+    E[Z \mid \alpha_{i-1} \cup \{x_i \in S\}] = cut\{S_i, N-S_i\} + \frac{1}{4}(\#\text{out edges from $x_i$ to $x_{i+1}$,...,$x_{|N|}$}) \\
+    E[Z \mid \alpha_{i-1} \cup \{x_i \in N-S\}] = cut\{S_i, N-S_i\} + \frac{1}{4}(\#\text{in edges from $x_{i+1}$,...,$x_{|N|}$ to $x_i$})\\
+  \end{cases}
+\end{equation*}
 \newline
-{\large b.} 
+$$E[Z \mid \alpha_{i-1} \cup \{x_i \in S\}] = cut\{S_i, N-S_i\} + \frac{1}{4}(\#\text{outgoing edges from $x_i$ to $x_{i+1}$,...,$x_{|N|}$})$$
+$$E[Z \mid \alpha_{i-1} \cup \{x_i \in N-S\}] = cut\{S_i, N-S_i\} + \frac{1}{4}(\#\text{incoming edges from $x_{i+1}$,...,$x_{|N|}$ to $x_i$})$$
+How $\alpha$ determines whether to assign a node $x_i$ either to $S$ or $N-S$ is by seeing how many edges are coming out of $x_i$ to nodes $x_{i+1},...,x_{|N|}$ compared to how many edges are coming into $x_i$ from nodes $x_{i+1},...,x_{|N|}$. If there are more outgoing edges than incoming edges, then it would be better to put $x_i$ in $S$ and if there are more incoming edges than outgoing edges, then it would be better to put $x_i$ in $N-S$. If there is a tie between incoming and outgoing edges, then put $x_i$ in S. These assignments offer a greater probability for the unassigned nodes to have a directed edge from $S$ to $N-S$ for the directed cut. 
 \newline
 \newline
 {\large c.} The worst-case approximation ratio of the simple local search algorithm is unbounded. Take for example a node $i$ and some number n of nodes where all edges are directed towards $i$. If we put node $i$ in set $S$ and the rest of the nodes in set $N-S$, then all the edges are directed from $N-S$ to $S$, giving a cut with 0 edges since only edges from $S$ to $N-S$ count. Using only one local move will not improve the cut, regardless of which node we decide to move. If we move node $i$ to $N-S$, then all nodes will be on that side. If we move any of the $n$ nodes from $N-S$ to $S$, then the edge will reside within $S$, still not improving the cut. We can see that the maximum cut would have the $n$ number of nodes in set $S$ and node $i$ in set $N-S$, which would give us a cut with $n$ number of edges. Thus, we can see that the worst-case approximation ratio is unbounded using the simple local search algorithm since we can scale $n$ to any arbitrarily large number.
