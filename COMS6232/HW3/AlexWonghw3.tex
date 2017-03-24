@@ -34,10 +34,20 @@ Given some directed graph $D = (N,E)$ and a random assignment of the nodes $i = 
 
 \problemNo{2}
 {\large a.} The quadratic program for this problem is given below:
+$$\text{max}\frac{1}{2}\sum\limits_{i<j}(1 +(y_i \cdot y_j \cdot z_{ij}))$$
+$$\text{s.t.} \ y_i \in \{-1, +1\}, \forall i = 1,...,n$$
+$$z_{ij} \in \{-1, +1\}, i < j$$
+The correspondence between the problem and the quadratic program are as follows:
+$$\text{object} \ i \in \text{class} \ S \Leftrightarrow y_i = +1$$
+$$\text{object} \ i \in \text{class} \ S' \Leftrightarrow y_i = -1$$
+$$\text{similar constraint} \ i \sim j \Leftrightarrow z_{ij} = +1$$
+$$\text{dissimilar constraint} \ i \nsim j \Leftrightarrow z_{ij} = -1$$ 
 \newline
-\newline
-max$\frac{1}{2}\sum_{i<j}^{}1$
-
+For objects $i, j$ that are in the same class with a similarity constraint: $$y_i y_j z_{ij} = (-1)(-1)z_{ij} \ \text{or} \ (+1)(+1)z_{ij} = 1 \cdot z_{ij} = (1)(1) = 1 \Leftrightarrow 1 + y_i y_j z_{ij} = 2$$
+For objects $i, j$ that are in the same class with a dissimilarity constraint: $$y_i y_j z_{ij} = (-1)(-1)z_{ij} \ \text{or} \ (+1)(+1)z_{ij} = 1 \cdot z_{ij} = (1)(-1) = -1 \Leftrightarrow 1 + y_i y_j z_{ij} = 0$$
+For objects $i, j$ that are in different classes with a similarity constraint: $$y_i y_j z_{ij} = (-1)(+1)z_{ij} \ \text{or} \ (+1)(-1)z_{ij} = -1 \cdot z_{ij} = (-1)(1) = -1 \Leftrightarrow 1 + y_i y_j z_{ij} = 0$$
+For objects $i, j$ that are in different classes with a dissimilarity constraint: $$y_i y_j z_{ij} = (-1)(+1)z_{ij} \ \text{or} \ (+1)(-1)z_{ij} = -1 \cdot z_{ij} = (-1)(-1) = 1 \Leftrightarrow 1 + y_i y_j z_{ij} = 2$$
+where the objective function is maximizing the number of satisfied constraints.
 
 \problemNo{3}
 {\large a.} \textbf{Lemma 3a} If $I$ is an independent set of $G$ then $I^k$ is an independent set of $G^{(k)}$.
