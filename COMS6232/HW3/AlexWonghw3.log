@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.17 (TeX Live 2016) (preloaded format=pdflatex 2016.5.22)  24 MAR 2017 05:56
+This is pdfTeX, Version 3.14159265-2.6-1.40.17 (TeX Live 2016) (preloaded format=pdflatex 2016.5.22)  24 MAR 2017 14:56
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -599,32 +599,47 @@ mm/m/it/12 []\OT1/cmr/m/n/12 ] = \OML/cmm/m/it/12 max []
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 41--43
+Underfull \hbox (badness 10000) in paragraph at lines 41--76
 
  []
 
 
-Overfull \hbox (9.51215pt too wide) detected at line 44
-\OML/cmm/m/it/12 E\OT1/cmr/m/n/12 [\OML/cmm/m/it/12 Z \OMS/cmsy/m/n/12 j \OML/c
-mm/m/it/12 [] \OMS/cmsy/m/n/12 [ f\OML/cmm/m/it/12 x[] \OMS/cmsy/m/n/12 2 \OML
-/cmm/m/it/12 N \OMS/cmsy/m/n/12 ^^@ \OML/cmm/m/it/12 S\OMS/cmsy/m/n/12 g\OT1/cm
-r/m/n/12 ] = \OML/cmm/m/it/12 cut\OMS/cmsy/m/n/12 f\OML/cmm/m/it/12 S[]; N \OMS
-/cmsy/m/n/12 ^^@ \OML/cmm/m/it/12 S[]\OMS/cmsy/m/n/12 g \OT1/cmr/m/n/12 + [](#[
-])
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 44--55
+Underfull \hbox (badness 10000) in paragraph at lines 41--76
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 44--55
+Underfull \hbox (badness 10000) in paragraph at lines 41--76
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 44--55
+Underfull \hbox (badness 10000) in paragraph at lines 41--76
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 41--76
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 41--76
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 41--76
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 41--76
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 41--76
 
  []
 
@@ -649,27 +664,7 @@ Package Fancyhdr Warning: \headheight is too small (12.0pt):
  This may cause the page layout to be inconsistent, however.
 
 [4]
-Underfull \hbox (badness 10000) in paragraph at lines 74--76
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 77--82
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 77--82
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 83--88
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 83--88
+Underfull \hbox (badness 10000) in paragraph at lines 104--109
 
  []
 
@@ -680,42 +675,7 @@ Package Fancyhdr Warning: \headheight is too small (12.0pt):
  This may cause the page layout to be inconsistent, however.
 
 [5]
-Underfull \hbox (badness 10000) in paragraph at lines 92--94
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 95--100
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 95--100
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 101--103
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 104--106
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 107--118
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 107--118
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 107--118
+Underfull \hbox (badness 10000) in paragraph at lines 109--113
 
  []
 
@@ -726,7 +686,27 @@ Package Fancyhdr Warning: \headheight is too small (12.0pt):
  This may cause the page layout to be inconsistent, however.
 
 [6]
-Underfull \hbox (badness 10000) in paragraph at lines 118--122
+Underfull \hbox (badness 10000) in paragraph at lines 115--117
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 118--123
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 118--123
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 124--129
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 124--129
 
  []
 
@@ -736,15 +716,72 @@ Package Fancyhdr Warning: \headheight is too small (12.0pt):
  We now make it that large for the rest of the document.
  This may cause the page layout to be inconsistent, however.
 
-[7] (./AlexWonghw3.aux) ) 
+[7]
+Underfull \hbox (badness 10000) in paragraph at lines 133--135
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 136--141
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 136--141
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 142--144
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 145--147
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 148--159
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 148--159
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 148--159
+
+ []
+
+
+Package Fancyhdr Warning: \headheight is too small (12.0pt): 
+ Make it at least 14.49998pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
+
+[8]
+Underfull \hbox (badness 10000) in paragraph at lines 159--163
+
+ []
+
+
+Package Fancyhdr Warning: \headheight is too small (12.0pt): 
+ Make it at least 14.49998pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
+
+[9] (./AlexWonghw3.aux) ) 
 Here is how much of TeX's memory you used:
  11344 strings out of 493014
  190165 string characters out of 6133351
- 280151 words of memory out of 5000000
+ 282152 words of memory out of 5000000
  14719 multiletter control sequences out of 15000+600000
  12910 words of font info for 51 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 43i,12n,70p,1500b,284s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 43i,12n,70p,1798b,284s stack positions out of 5000i,500n,10000p,200000b,80000s
 </usr/local/texlive/2016/texmf-dist/fonts/type1/public
 /amsfonts/cm/cmbx12.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/
 amsfonts/cm/cmex10.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/a
@@ -758,10 +795,10 @@ msy10.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cm
 sy8.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt
 12.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/symbols/
 msbm10.pfb>
-Output written on AlexWonghw3.pdf (7 pages, 136428 bytes).
+Output written on AlexWonghw3.pdf (9 pages, 144369 bytes).
 PDF statistics:
- 76 PDF objects out of 1000 (max. 8388607)
- 54 compressed objects within 1 object stream
+ 82 PDF objects out of 1000 (max. 8388607)
+ 58 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
  1 words of extra memory for PDF output out of 10000 (max. 10000000)
 

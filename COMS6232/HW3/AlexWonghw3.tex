@@ -40,10 +40,6 @@ For $1 \leq i \leq |N|$:
   \end{cases}
 \end{equation*}
 \newline
-$$E[Z \mid \alpha_{i-1} \cup \{x_i \in S\}] = cut\{S_i, N-S_i\} + \frac{1}{4}(\#\text{outgoing edges from $x_i$ to $x_{i+1}$,...,$x_{|N|}$})$$
-$$E[Z \mid \alpha_{i-1} \cup \{x_i \in N-S\}] = cut\{S_i, N-S_i\} + \frac{1}{4}(\#\text{incoming edges from $x_{i+1}$,...,$x_{|N|}$ to $x_i$})$$
-How $\alpha$ determines whether to assign a node $x_i$ either to $S$ or $N-S$ is by seeing how many edges are coming out of $x_i$ to nodes $x_{i+1},...,x_{|N|}$ compared to how many edges are coming into $x_i$ from nodes $x_{i+1},...,x_{|N|}$. If there are more outgoing edges than incoming edges, then it would be better to put $x_i$ in $S$ and if there are more incoming edges than outgoing edges, then it would be better to put $x_i$ in $N-S$. If there is a tie between incoming and outgoing edges, then put $x_i$ in S. These assignments offer a greater probability for the unassigned nodes to have a directed edge from $S$ to $N-S$ for the directed cut. 
-\newline
 \newline
 {\large c.} The worst-case approximation ratio of the simple local search algorithm is unbounded. Take for example a node $i$ and some number n of nodes where all edges are directed towards $i$. If we put node $i$ in set $S$ and the rest of the nodes in set $N-S$, then all the edges are directed from $N-S$ to $S$, giving a cut with 0 edges since only edges from $S$ to $N-S$ count. Using only one local move will not improve the cut, regardless of which node we decide to move. If we move node $i$ to $N-S$, then all nodes will be on that side. If we move any of the $n$ nodes from $N-S$ to $S$, then the edge will reside within $S$, still not improving the cut. We can see that the maximum cut would have the $n$ number of nodes in set $S$ and node $i$ in set $N-S$, which would give us a cut with $n$ number of edges. Thus, we can see that the worst-case approximation ratio is unbounded using the simple local search algorithm since we can scale $n$ to any arbitrarily large number.
 \newline
@@ -52,23 +48,68 @@ How $\alpha$ determines whether to assign a node $x_i$ either to $S$ or $N-S$ is
 \newline
 \newline
 Given some directed graph $D = (N,E)$ and a random assignment of the nodes $i = 1,...,|N|$ into either set $S$ or $N-S$, while $\exists$ a node $i$ that has more neighbors on the same side than the opposite side, move $i$ to the opposite side. Based on slides 23 and 24 of the Lecture 5 slides, we will end up with $\geq 1/2|E|$ of edges that go between the sets $S$ and $N-S$. From this, we find the value of the directed cut of these edges. Then, we move all the current nodes that are in $S$ to $N-S$ and the current nodes of $N-S$ to $S$ and find the value of the directed cut of these edges. We take the configuration of $S$ and $N-S$ based on the larger of the two directed cuts that we found, which at least one of them $\geq 1/4|E|$. One of the cuts will be $\geq 1/4|E|$ because there are a total of $\geq 1/2|E|$ edges in the cut, so if $\leq 1/4|E|$ edges go from $S$ to $N-S$ in one configuration, then there must be $\geq 1/4|E|$ edges going from $N-S$ to $S$, so we would move the nodes to orient the direction of the edges to go from $S$ to $N-S$.
+\newline
+\newline
+{\large e.} We can prove that the optimal value of the ILP is equal to the optimal value of the MAX DICUT problem by showing a mapping between ILP and MAX DICUT: \newline
+\newline
+$x_i \in \{0,1\}, \forall i \in N \Leftrightarrow$ the two different classes that $node_i$ can be in: \newline
+\textbf{1.}$ x_i = 1 \Leftrightarrow node_i$ being in class S \newline
+\textbf{2.}$x_i = 0 \Leftrightarrow node_i$ being in class N-S \newline
+\newline
+$y_{ij} \leq x_i \ and \ y_{ij} \leq 1 - x_j,  \forall (i, j) \in E \Leftrightarrow$ the 4 different possibilities that the nodes can be configured in the set:
+\newline
+\textbf{1.} if $x_i = 1$ and $x_j = 0$, then $y_{ij} = 1 \Leftrightarrow$ if $node_i \in S$ and $node_j \in N-S$, then edge $(i,j)$ is in the cut.
+\newline
+\textbf{2.} if $x_i = 0$ and $x_j = 1$, then $y_{ij} = 0 \Leftrightarrow$ if $node_i \in N-S$ and $node_j \in S$, then edge $(i,j)$ is not in the cut.
+\newline
+\textbf{3.} if $x_i = 0$ and $x_j = 0$, then $y_{ij} = 0 \Leftrightarrow$ if $node_i \in N-S$ and $node_j \in N-S$, then edge $(i,j)$ is not in the cut.
+\newline
+\textbf{4.} if $x_i = 1$ and $x_j = 1$, then $y_{ij} = 0 \Leftrightarrow$ if $node_i \in S$ and $node_j \in S$, then edge $(i,j)$ is not in the cut.
+\newline
+\newline
+maximize $\sum\limits_{(i,j) \in E}y_{ij} \Leftrightarrow$ maximize \# of directed edges where $i \in S, j \in N-S, (i,j) \in E$
+\newline
+\newline
+Thus the optimal value of this ILP is equal to the optimal value of the MAX DICUT problem and we can obtain an optimal solution to the MAX DICUT problem from an optimal solution to the ILP by placing $node_i$ in set $S$ in accordance with $x_i = 1$ and $node_i$ in set $N-S$ in accordance with $x_i = 0$.
+\newline
+\newline
+{\large f.} If we take a LP reduction, then we know that: $$Pr[\text{edge in cut}] = Pr[x_i \in S, x_j \in N-S] = Pr[x_i \in S]Pr[x_j \in N-S]$$ 
+$$=(\frac{1}{4} + \frac{x_i}{2})(\frac{3}{4} - \frac{x_j}{2})$$
+$$=\frac{3}{16} - \frac{x_j}{8} + \frac{3x_i}{8} - \frac{x_i x_j}{4}$$
+$$= \frac{3}{16} - \frac{2x_j}{16} + \frac{6x_i}{16} - \frac{4x_i x_j}{16}$$
+$$= \frac{6x_i - 4x_i x_j - 2x_j + 3}{16}$$
+$$= \frac{6x_i - 2x_j(2x_i - 1) + 3}{16}$$
+$$\geq \frac{6y_{ij} - 2x_j(2y_{ij} - 1) + 3}{16}$$
+$$\geq \frac{6y_{ij} + 2(y_{ij} - 1)(2y_{ij} - 1) + 3}{16}$$
+$$= \frac{6y_{ij} + (2y_{ij} - 2)(2y_{ij} - 1) + 3}{16}$$
+$$= \frac{6y_{ij} + 4y_{ij}^2 - 2y_{ij} - 4y_{ij} + 2 + 3}{16}$$
+$$= \frac{4y_{ij}^2 + 5}{16}$$
+$$= \frac{y_{ij}^2}{4} + \frac{5}{16}$$
+$$= \frac{4y_{ij}^2}{16} + \frac{5}{16} \geq 1/2OPT$$
 
 \problemNo{2}
 {\large a.} The quadratic program for this problem is given below:
-$$\text{max}\frac{1}{2}\sum\limits_{i<j}(1 +(y_i \cdot y_j \cdot z_{ij}))$$
+$$\text{max}\frac{1}{2}\sum\limits_{i<j}(1 -(y_i \cdot y_j \cdot z_{ij}))$$
 $$\text{s.t.} \ y_i \in \{-1, +1\}, \forall i = 1,...,n$$
 $$z_{ij} \in \{-1, +1\}, i < j$$
 The correspondence between the problem and the quadratic program are as follows:
 $$\text{object} \ i \in \text{class} \ S \Leftrightarrow y_i = +1$$
 $$\text{object} \ i \in \text{class} \ S' \Leftrightarrow y_i = -1$$
-$$\text{similar constraint} \ i \sim j \Leftrightarrow z_{ij} = +1$$
-$$\text{dissimilar constraint} \ i \nsim j \Leftrightarrow z_{ij} = -1$$ 
+$$\text{similar constraint} \ i \sim j \Leftrightarrow z_{ij} = -1$$
+$$\text{dissimilar constraint} \ i \nsim j \Leftrightarrow z_{ij} = +1$$ 
 \newline
-For objects $i, j$ that are in the same class with a similarity constraint: $$y_i y_j z_{ij} = (-1)(-1)z_{ij} \ \text{or} \ (+1)(+1)z_{ij} = 1 \cdot z_{ij} = (1)(1) = 1 \Leftrightarrow 1 + y_i y_j z_{ij} = 2$$
-For objects $i, j$ that are in the same class with a dissimilarity constraint: $$y_i y_j z_{ij} = (-1)(-1)z_{ij} \ \text{or} \ (+1)(+1)z_{ij} = 1 \cdot z_{ij} = (1)(-1) = -1 \Leftrightarrow 1 + y_i y_j z_{ij} = 0$$
-For objects $i, j$ that are in different classes with a similarity constraint: $$y_i y_j z_{ij} = (-1)(+1)z_{ij} \ \text{or} \ (+1)(-1)z_{ij} = -1 \cdot z_{ij} = (-1)(1) = -1 \Leftrightarrow 1 + y_i y_j z_{ij} = 0$$
-For objects $i, j$ that are in different classes with a dissimilarity constraint: $$y_i y_j z_{ij} = (-1)(+1)z_{ij} \ \text{or} \ (+1)(-1)z_{ij} = -1 \cdot z_{ij} = (-1)(-1) = 1 \Leftrightarrow 1 + y_i y_j z_{ij} = 2$$
-where the objective function is maximizing the number of satisfied constraints.
+For objects $i, j$ that are in the same class with a similarity constraint: $$y_i y_j z_{ij} = (-1)(-1)z_{ij} \ \text{or} \ (+1)(+1)z_{ij} = 1 \cdot z_{ij} = (+1)(-1) = 1 \Leftrightarrow 1 - y_i y_j z_{ij} = 2$$
+For objects $i, j$ that are in the same class with a dissimilarity constraint: $$y_i y_j z_{ij} = (-1)(-1)z_{ij} \ \text{or} \ (+1)(+1)z_{ij} = 1 \cdot z_{ij} = (+1)(+1) = -1 \Leftrightarrow 1 - y_i y_j z_{ij} = 0$$
+For objects $i, j$ that are in different classes with a similarity constraint: $$y_i y_j z_{ij} = (-1)(+1)z_{ij} \ \text{or} \ (+1)(-1)z_{ij} = -1 \cdot z_{ij} = (-1)(-1) = -1 \Leftrightarrow 1 - y_i y_j z_{ij} = 0$$
+For objects $i, j$ that are in different classes with a dissimilarity constraint: $$y_i y_j z_{ij} = (-1)(+1)z_{ij} \ \text{or} \ (+1)(-1)z_{ij} = -1 \cdot z_{ij} = (-1)(+1) = 1 \Leftrightarrow 1 - y_i y_j z_{ij} = 2$$
+where the objective function is maximizing the number of satisfied constraints. \newline
+Thus, we have given a quadratic program for this problem.
+\newline
+\newline
+{\large b.} To get a randomized approximation algorithm whose expected number of satisfied constraints is at least 0.878OPT, we apply a SDP (VP) relaxation on some quadratic program. Notice that the quadratic program that we gave in part \textbf{a} maps to the integer quadratic program for MAX CUT (shown in slide 31 of lecture 5 slides) with weights of edges = 1. We show this by mapping from our constraints problem that for objects $i, j$ that are in the same class with a similarity constraint: $$y_i y_j z_{ij} = (-1)(-1)z_{ij} \ \text{or} \ (+1)(+1)z_{ij} = 1 \cdot z_{ij} = (+1)(-1) = 1 \Leftrightarrow 1 - y_i y_j z_{ij} = 2$$ and for objects $i, j$ that are in different classes with a dissimilarity constraint: $$y_i y_j z_{ij} = (-1)(+1)z_{ij} \ \text{or} \ (+1)(-1)z_{ij} = -1 \cdot z_{ij} = (-1)(+1) = 1 \Leftrightarrow 1 - y_i y_j z_{ij} = 2$$ map to the MAX CUT problem where some edge $(i,j) \in$ cut. Similarly, we can map from our constraints problem that for objects $i, j$ that are in the same class with a dissimilarity constraint: $$y_i y_j z_{ij} = (-1)(-1)z_{ij} \ \text{or} \ (+1)(+1)z_{ij} = 1 \cdot z_{ij} = (+1)(+1) = -1 \Leftrightarrow 1 - y_i y_j z_{ij} = 0$$ and for objects $i, j$ that are in different classes with a similarity constraint: $$y_i y_j z_{ij} = (-1)(+1)z_{ij} \ \text{or} \ (+1)(-1)z_{ij} = -1 \cdot z_{ij} = (-1)(-1) = -1 \Leftrightarrow 1 - y_i y_j z_{ij} = 0$$ map to the MAX CUT problem where some edge $(i,j) \notin$ cut. The objective function of the constraints problem is maximizing the number of satisfied constraints, which maps to the objective function of the MAX CUT of maximizing the weight of the cut, but since all edge weights = 1, it would be essentially maximizing the number of edges in the cut. 
+\newline
+\newline
+Since we have shown that the constraints problem maps to the MAX CUT problem, we can take the SDP relaxation of the IQP for MAX CUT and utilize randomized vector rounding on the SDP, with the analysis being shown from slides 31 to 37 of the lecture 5 slides that the $E[weight \ of \ cut] \geq 0.878 OPT$ which implies $E[\# \ satisfied \ constraints] \geq 0.878 OPT$.
 
 \problemNo{3}
 {\large a.} \textbf{Lemma 3a} If $I$ is an independent set of $G$ then $I^k$ is an independent set of $G^{(k)}$.
