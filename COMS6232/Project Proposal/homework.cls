@@ -101,7 +101,7 @@
 	\fi
 }
 
-\title{\@coursename \ - Project Proposal: Asymmetric TSP}
+\title{\@coursename \ - Project Proposal: Summary of the Current Best Asymmetric TSP Approximation Algorithms}
 \author{\@studname \ (\@uni) \ - \texttt{\@studmail}}
 \date{\today}
 
