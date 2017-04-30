@@ -1,0 +1,95 @@
+\begin{thebibliography}{10}
+
+\bibitem{amsmath}
+{\sc {American Mathematical Society}}.
+\newblock User's guide for the \texttt{amsmath} package (version 2.0), 2002.
+
+\bibitem{AMSMSC2010}
+{\sc {American Mathematical Society}}.
+\newblock {Mathematics Subject Classification}, 2010.
+
+\bibitem{AG15}
+{\sc Anari, N., and Gharan, S.~O.}
+\newblock Effective-resistance-reducing flows and asymmetric {TSP}.
+\newblock {\em In: Proceedings of FOCS\/} (2015).
+
+\bibitem{AGM10}
+{\sc Asadpour, A., Goemans, M.~X., Madry, A., Gharan, S.~O., and Saberi, A.}
+\newblock An $\mathcal{O}$(logn / log logn)-approximation algorithm for the
+  asymmetric traveling salesman problem.
+\newblock {\em In: Proceedings of SODA\/} (2010), 379--389.
+
+\bibitem{clawpack}
+{\sc {Clawpack Development Team}}.
+\newblock Clawpack software, 2015.
+\newblock Version 5.2.2.
+
+\bibitem{CalcI}
+{\sc Dawkins, P.}
+\newblock Paul's online math notes: Calculus {I} --- notes.
+
+\bibitem{shortmath}
+{\sc Downes, M.}
+\newblock Short math guide for {\LaTeX}, 2002.
+
+\bibitem{pgfplots}
+{\sc Feuers\"anger, C.}
+\newblock Manual for package \texttt{PGFPLOTS}, May 2015.
+
+\bibitem{GSS11}
+{\sc Gharan, S.~O., Saberi, A., and Singh, M.}
+\newblock A randomized rounding approach to the traveling salesman problem.
+\newblock {\em In: Proceedings of FOCS\/} (2011).
+
+\bibitem{GoVa13}
+{\sc Golub, G.~H., and Van~Loan, C.~F.}
+\newblock {\em Matrix Computations}, 4th~ed.
+\newblock The Johns Hopkins University Press, Baltimore, 2013.
+
+\bibitem{Hi14}
+{\sc Higham, N.}
+\newblock A call for better indexes.
+\newblock SIAM Blogs, Nov. 2014.
+
+\bibitem{KLS15}
+{\sc Karpinski, M., Lampis, M., and Schmied, R.}
+\newblock New approximability bounds for {TSP}.
+\newblock {\em J. Comput. Syst. Sci. 81\/}.
+
+\bibitem{KoMa14}
+{\sc Kolda, T.~G., and Mayo, J.~R.}
+\newblock An adaptive shifted power method for computing generalized tensor
+  eigenpairs.
+\newblock {\em SIAM Journal on Matrix Analysis and Applications 35}, 4 (Dec.
+  2014), 1563--1581.
+
+\bibitem{La86}
+{\sc Lamport, L.}
+\newblock {\em \LaTeX: A Document Preparation System}.
+\newblock Addison--Wesley, Reading, MA, 1986.
+
+\bibitem{MiGo04}
+{\sc Mittlebach, F., and Goossens, M.}
+\newblock {\em The \LaTeX\ Companion}, 2nd~ed.
+\newblock Addison--Wesley, 2004.
+
+\bibitem{Ne03}
+{\sc Newman, M. E.~J.}
+\newblock Properties of highly clustered networks.
+\newblock {\em Phys. Rev. E 68\/} (Aug. 2003).
+
+\bibitem{PeKoPi14}
+{\sc Peng, C., Kolda, T.~G., and Pinar, A.}
+\newblock Accelerating community detection by using {K}-core subgraphs, Mar.
+  2014.
+
+\bibitem{WoZhMeSh05}
+{\sc Woessner, D.~E., Zhang, S., Merritt, M.~E., and Sherry, A.~D.}
+\newblock Numerical solution of the {Bloch} equations provides insights into
+  the optimum design of {PARACEST} agents for {MRI}.
+\newblock {\em Magnetic Resonance in Medicine 53}, 4 (Apr. 2005), 790--799.
+
+\bibitem{siam}
+{SIAM} style manual: For journals and books, 2013.
+
+\end{thebibliography}
