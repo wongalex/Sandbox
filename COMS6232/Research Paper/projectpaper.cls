@@ -1,4 +1,4 @@
-\LoadClass[10pt]{article}
+\LoadClass[11pt]{article}
 \ProvidesClass{homework}
 
 \RequirePackage{ifthen}
@@ -58,10 +58,10 @@
 
 \fancypagestyle{plain}
 {
-	\fancyhead{}
+	%\fancyhead{}
 	\fancyfoot{}
-	\fancyfoot[LE,LO]{\@coursename}
-	\fancyfoot[RE,RO] {\thepage}
+	%\fancyfoot[LE,LO]{\@coursename}
+	\fancyfoot[C] {\thepage}
 	\renewcommand{\headrulewidth}{0pt}
 }
 
@@ -71,12 +71,13 @@
 
 \fancyhead{}
 \fancyfoot{}
-\fancyhead[RE,RO]{Problem Set \#\@hwNo}
-\fancyhead[CE,CO]{Problem \arabic{prob}}
-\fancyhead[LE,LO]{\@studname \ (\@uni)}
-\fancyfoot[LE,LO]{\@coursename}
-\fancyfoot[RE,RO] {\thepage}
-\renewcommand{\footrulewidth}{0.4 pt}
+%\fancyhead[RE,RO]{Problem Set \#\@hwNo}
+%\fancyhead[CE,CO]{Problem \arabic{prob}}
+%\fancyhead[LE,LO]{\@studname \ (\@uni)}
+%\fancyfoot[LE,LO]{\@coursename}
+\fancyfoot[C] {\thepage}
+\renewcommand{\headrulewidth}{0pt}
+%\renewcommand{\footrulewidth}{0.4 pt}
 
 \newcounter{emptypages}
 \setcounter{emptypages}{0}
@@ -103,7 +104,7 @@
 	\fi
 }
 
-\title{A Summary of the Current State of the Art Algorithms For the Asymmetric Traveling Salesman Problem}
+\title{A Summary of the Current State of the Art Algorithms for the Asymmetric Traveling Salesman Problem}
 \author{\@studname \ (\@uni) \ - \texttt{\@studmail}}
 \date{\today}
 

@@ -16,17 +16,32 @@
 \begin{document}
 \maketitle
 \begin{abstract}
-  This is an example SIAM \LaTeX\ article. This can be used as a
-  template for new articles.  Abstracts must be able to stand alone
-  and so cannot contain citations to the paper's references,
-  equations, etc.  An abstract must consist of a single paragraph and
-  be concise. Because of online formatting, abstracts must appear as
-  plain as possible. Any equations should be inline.
+We look at some of the state of the art algorithms for the Asymmetric Traveling Salesman problem and its current known inapproximability bounds. The first algorithm, by Asadpour et al.\cite{AGM10}, details an $O$(log $n$ / log log $n$)-approximation algorithm for the general case of ATSP for costs satisfying the triangle inequality. The second algorithm, by Svensson et al.\cite{STV16}, details a constant factor approximation algorithm for a special case of ATSP that contains only two different edge weights of arbitrary weight where the costs satisfy the triangle inequality. Lastly, an algorithm by Karpinski et al.\cite{KLS15} gives us a hardness of approximation bounds of 75 / 74 for ATSP.
 \end{abstract}
+%%%%%%%%%%%%%%%%%%%%Section 1 Introduction%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Introduction}
+In Section 2, we provide an overview of an $O$(log $n$ / log log $n$)-approximation algorithm for the general case of ATSP for costs satisfying the triangle inequality which comes from the work of Asadpour et al. \cite{AGM10}. The $O$(log $n$ / log log $n$)-approximation algorithm introduces the concept of the "thinness" of a spanning tree where the thinness correlates with the approximation bound of ATSP. This is an improvement over the decades-long standing $\Theta$(log$n$)-approximation bound given by the work of Frieze et al. \cite{FGM83}.
+
 {\large a.} For $i = 1,...,|N|$ we assign node $i$ to set $S$ with probability $1/2$ and to set $N-S$ with probability $1/2$. For each directed edge $(i, j)$, let $Z_{(i,j)} = 1$ if $(i, j) \in$ directed cut from S to N-S, else 0 otherwise. Thus, we get the equation: $$E[Z_{(i,j)}] = P[(i,j) \in \text{directed cut from S to N-S}]$$ $$= P[i \in S, j \in N-S] = P[i \in  S]P[j \in N-S] = 1/2 \cdot 1/2 = 1/4$$ \hfill\qed
-\section{2a}
-\subsection{2aa}
+
+%%%%%%%%%%%%%%%%%%%%Section 2 An O logn / loglogn approx algo%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{An $O$(log $n$ / log log $n$)-approximation algorithm for ATSP}
+
+\subsection{An $O$(log $n$ / log log $n$)-approximation algorithm}
+The following is the $O$(log $n$ / log log $n$)-approximation algorithm for ATSP (see \cite{AGM10} sect. 1): 
+\newline
+\begin{algorithm}
+\caption{An $O$(log $n$ / log log $n$)-approximation algorithm for ATSP}
+\begin{algorithmic}
+\STATE{\textbf{Input:} A set $V$ consisting of $n$ points and a cost function $c$ : $V x V \rightarrow \mathbb{R}^+$ where the costs satisfy the triangle inequality.}
+\STATE{\textbf{Output:} An $O$($\frac{logn}{log log n}$)-approximation to the ATSP instance described by the input's $V$ and $c$.}
+\STATE{1. Solve the Held-Karp}
+\end{algorithmic}
+\end{algorithm}
+\newline
+Throughout the rest of this section, we will divide each step of the algorithm into subsection(s) to describe it in more detail and/or prove its correctness.
+\subsection{Preliminaries and Notation}
+In this subsection, we describe much of the notation that will be used throughout the rest of this section.
 \subsection{2ab}
 {\large b.} Deterministic Algorithm (MCE) for the Maximum Directed Cut problem:
 \newline
@@ -53,6 +68,7 @@ if $E[Z \mid \alpha_{i-1} \cup \{x_i \in S\}] \geq E[Z \mid \alpha_{i-1} \cup \{
 \RETURN $T$
 \end{algorithmic}
 \end{algorithm}
+\newline
 After the algorithm runs, $\alpha$ will contain the assignment of the nodes that has a directed cut with at least $1/4$ of the edges. How $E[Z]$ is determined is as follows: \newline
 For $1 \leq i \leq |N|$:
 \begin{equation*}
