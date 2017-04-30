@@ -1,4 +1,4 @@
-\LoadClass[11pt]{article}
+\LoadClass[10pt]{article}
 \ProvidesClass{homework}
 
 \RequirePackage{ifthen}

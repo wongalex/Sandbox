@@ -2,7 +2,8 @@
 
 \bibitem{AG15}
 {\sc Anari, N., and Gharan, S.~O.}
-\newblock Effective-resistance-reducing flows and asymmetric {TSP}.
+\newblock Effective-resistance-reducing flows, spectrally thin trees, and
+  asymmetric {TSP}.
 \newblock {\em In: Proceedings of FOCS\/} (2015).
 
 \bibitem{AGM10}
@@ -16,6 +17,11 @@
 \newblock Worst-case analysis of a new heuristic for the traveling salesman
   problem.
 \newblock {\em Technical Report, DTIC Document\/} (1976).
+
+\bibitem{Edm71}
+{\sc Edmonds, J.}
+\newblock Matroids and the greedy algorithm.
+\newblock {\em Mathematical Programming\/} (1971), pages 127--136.
 
 \bibitem{FGM83}
 {\sc Frieze, A.~M., Galbiati, G., and Maffioli, F.}
@@ -34,6 +40,11 @@
 \newblock A randomized rounding approach to the traveling salesman problem.
 \newblock {\em In: Proceedings of FOCS\/} (2011).
 
+\bibitem{HK70}
+{\sc Held, M., and Karp, R.}
+\newblock The traveling salesman problem and minimum spanning trees.
+\newblock {\em Operations Research\/} (1970), 18:1138--1162.
+
 \bibitem{KLS15}
 {\sc Karpinski, M., Lampis, M., and Schmied, R.}
 \newblock New approximability bounds for {TSP}.
@@ -43,6 +54,11 @@
 {\sc Papadimitriou, C.~H., and Yannakakis, M.}
 \newblock The traveling salesman problem with distances one and two.
 \newblock {\em Math. Oper. Res.\/} (1993), 18(1):1--11.
+
+\bibitem{Sch03}
+{\sc Schrijver, A.}
+\newblock Combinatorial optimization.
+\newblock {\em vol. 2 of Algorithms and Combinatorics\/} (2003).
 
 \bibitem{Sve15}
 {\sc Svensson, O.}
