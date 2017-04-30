@@ -7,6 +7,7 @@
 \RequirePackage{pstricks}
 \RequirePackage{pst-node}
 \RequirePackage[margin=1.2in]{geometry}
+\RequirePackage[capitalize,nameinlink]{cleveref}[0.19]
 
 \theoremstyle{plain}
 \theoremstyle{definition}
@@ -23,6 +24,7 @@
 \newtheorem*{sketch}{Sketch}
 \newtheorem{remark}{Remark}
 \newtheorem{example}{Example}
+
 
 \newcommand{\studname}[1]{\gdef\@studname{#1}}
 \newcommand{\studmail}[1]{\gdef\@studmail{#1}}
@@ -101,7 +103,7 @@
 	\fi
 }
 
-\title{\@coursename \ - Problem Set \#\@hwNo}
+\title{A Summary of the Current State of the Art Algorithms For the Asymmetric Traveling Salesman Problem}
 \author{\@studname \ (\@uni) \ - \texttt{\@studmail}}
 \date{\today}
 

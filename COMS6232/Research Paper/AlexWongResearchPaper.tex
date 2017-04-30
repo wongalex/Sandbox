@@ -1,0 +1,190 @@
+\documentclass[oneside]{projectpaper} %%Change `twoside' to `oneside' if you are printing only on the one side of each sheet.
+\usepackage{amsmath}
+\usepackage{amssymb,mathtools}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{algorithm}
+\usepackage{algorithmic}
+\graphicspath{}
+
+\studname{Alex Wong}
+\studmail{asw2181@columbia.edu}
+\coursename{COMS E6232}
+\hwNo{3}
+\uni{asw2181}
+
+\begin{document}
+\maketitle
+\begin{abstract}
+  This is an example SIAM \LaTeX\ article. This can be used as a
+  template for new articles.  Abstracts must be able to stand alone
+  and so cannot contain citations to the paper's references,
+  equations, etc.  An abstract must consist of a single paragraph and
+  be concise. Because of online formatting, abstracts must appear as
+  plain as possible. Any equations should be inline.
+\end{abstract}
+\section{Introduction}
+{\large a.} For $i = 1,...,|N|$ we assign node $i$ to set $S$ with probability $1/2$ and to set $N-S$ with probability $1/2$. For each directed edge $(i, j)$, let $Z_{(i,j)} = 1$ if $(i, j) \in$ directed cut from S to N-S, else 0 otherwise. Thus, we get the equation: $$E[Z_{(i,j)}] = P[(i,j) \in \text{directed cut from S to N-S}]$$ $$= P[i \in S, j \in N-S] = P[i \in  S]P[j \in N-S] = 1/2 \cdot 1/2 = 1/4$$ \hfill\qed
+\section{2a}
+\subsection{2aa}
+\subsection{2ab}
+{\large b.} Deterministic Algorithm (MCE) for the Maximum Directed Cut problem:
+\newline
+We first define $\alpha$ as the deterministic assignment of nodes $x_i$, $i = 1,...,|N|$, either in set $S$ or in set $N-S$. At the beginning of the algorithm, $\alpha = \emptyset$. The following is the MCE algorithm:
+\newline
+For $i = 1,...,|N|$,  \newline
+
+if $E[Z \mid \alpha_{i-1} \cup \{x_i \in S\}] \geq E[Z \mid \alpha_{i-1} \cup \{x_i \in N-S\}]$  \newline
+
+\quad \quad then $\alpha = \alpha \cup \{x_i \in S\}$ \newline
+
+\quad \quad else $\alpha = \alpha \cup \{x_i \in N-S\}$ \newline
+\begin{algorithm}
+\caption{Build tree}
+\label{alg:buildtree}
+\begin{algorithmic}
+\STATE{Define $P:=T:=\{ \{1\},\ldots,\{d\}$\}}
+\WHILE{$\#P > 1$}
+\STATE{Choose $C^\prime\in\mathcal{C}_p(P)$ with $C^\prime := \operatorname{argmin}_{C\in\mathcal{C}_p(P)} \varrho(C)$}
+\STATE{Find an optimal partition tree $T_{C^\prime}$ }
+\STATE{Update $P := (P{\setminus} C^\prime) \cup \{ \bigcup_{t\in C^\prime} t \}$}
+\STATE{Update $T := T \cup \{ \bigcup_{t\in\tau} t : \tau\in T_{C^\prime}{\setminus} \mathcal{L}(T_{C^\prime})\}$}
+\ENDWHILE
+\RETURN $T$
+\end{algorithmic}
+\end{algorithm}
+After the algorithm runs, $\alpha$ will contain the assignment of the nodes that has a directed cut with at least $1/4$ of the edges. How $E[Z]$ is determined is as follows: \newline
+For $1 \leq i \leq |N|$:
+\begin{equation*}
+  E[Z \mid \alpha_i] = max
+  \begin{cases}
+    E[Z \mid \alpha_{i-1} \cup \{x_i \in S\}] = cut\{S_i, N-S_i\} + \frac{1}{4}(\#\text{out edges from $x_i$ to $x_{i+1}$,...,$x_{|N|}$}) \\
+    E[Z \mid \alpha_{i-1} \cup \{x_i \in N-S\}] = cut\{S_i, N-S_i\} + \frac{1}{4}(\#\text{in edges from $x_{i+1}$,...,$x_{|N|}$ to $x_i$})\\
+  \end{cases}
+\end{equation*}
+\newline
+\newline
+{\large c.} The worst-case approximation ratio of the simple local search algorithm is unbounded. Take for example a node $i$ and some number n of nodes where all edges are directed towards $i$. If we put node $i$ in set $S$ and the rest of the nodes in set $N-S$, then all the edges are directed from $N-S$ to $S$, giving a cut with 0 edges since only edges from $S$ to $N-S$ count. Using only one local move will not improve the cut, regardless of which node we decide to move. If we move node $i$ to $N-S$, then all nodes will be on that side. If we move any of the $n$ nodes from $N-S$ to $S$, then the edge will reside within $S$, still not improving the cut. We can see that the maximum cut would have the $n$ number of nodes in set $S$ and node $i$ in set $N-S$, which would give us a cut with $n$ number of edges. Thus, we can see that the worst-case approximation ratio is unbounded using the simple local search algorithm since we can scale $n$ to any arbitrarily large number.
+\newline
+\newline
+{\large d.} We can improve the local search so that it guarantees ratio 1/4. The improvement of the local search algorithm is summarized below:
+\newline
+\newline
+Given some directed graph $D = (N,E)$ and a random assignment of the nodes $i = 1,...,|N|$ into either set $S$ or $N-S$, while $\exists$ a node $i$ that has more neighbors on the same side than the opposite side, move $i$ to the opposite side. Based on slides 23 and 24 of the Lecture 5 slides, we will end up with $\geq 1/2|E|$ of edges that go between the sets $S$ and $N-S$. From this, we find the value of the directed cut of these edges. Then, we move all the current nodes that are in $S$ to $N-S$ and the current nodes of $N-S$ to $S$ and find the value of the directed cut of these edges. We take the configuration of $S$ and $N-S$ based on the larger of the two directed cuts that we found, which at least one of them $\geq 1/4|E|$. One of the cuts will be $\geq 1/4|E|$ because there are a total of $\geq 1/2|E|$ edges in the cut, so if $\leq 1/4|E|$ edges go from $S$ to $N-S$ in one configuration, then there must be $\geq 1/4|E|$ edges going from $N-S$ to $S$, so we would move the nodes to orient the direction of the edges to go from $S$ to $N-S$.
+\newline
+\newline
+{\large e.} We can prove that the optimal value of the ILP is equal to the optimal value of the MAX DICUT problem by showing a mapping between ILP and MAX DICUT: \newline
+\newline
+$x_i \in \{0,1\}, \forall i \in N \Leftrightarrow$ the two different classes that $node_i$ can be in: \newline
+\textbf{1.}$ x_i = 1 \Leftrightarrow node_i$ being in class S \newline
+\textbf{2.}$x_i = 0 \Leftrightarrow node_i$ being in class N-S \newline
+\newline
+$y_{ij} \leq x_i \ and \ y_{ij} \leq 1 - x_j,  \forall (i, j) \in E \Leftrightarrow$ the 4 different possibilities that the nodes can be configured in the set:
+\newline
+\textbf{1.} if $x_i = 1$ and $x_j = 0$, then $y_{ij} = 1 \Leftrightarrow$ if $node_i \in S$ and $node_j \in N-S$, then edge $(i,j)$ is in the cut.
+\newline
+\textbf{2.} if $x_i = 0$ and $x_j = 1$, then $y_{ij} = 0 \Leftrightarrow$ if $node_i \in N-S$ and $node_j \in S$, then edge $(i,j)$ is not in the cut.
+\newline
+\textbf{3.} if $x_i = 0$ and $x_j = 0$, then $y_{ij} = 0 \Leftrightarrow$ if $node_i \in N-S$ and $node_j \in N-S$, then edge $(i,j)$ is not in the cut.
+\newline
+\textbf{4.} if $x_i = 1$ and $x_j = 1$, then $y_{ij} = 0 \Leftrightarrow$ if $node_i \in S$ and $node_j \in S$, then edge $(i,j)$ is not in the cut.
+\newline
+\newline
+maximize $\sum\limits_{(i,j) \in E}y_{ij} \Leftrightarrow$ maximize \# of directed edges where $i \in S, j \in N-S, (i,j) \in E$
+\newline
+\newline
+Thus the optimal value of this ILP is equal to the optimal value of the MAX DICUT problem and we can obtain an optimal solution to the MAX DICUT problem from an optimal solution to the ILP by placing $node_i$ in set $S$ in accordance with $x_i = 1$ and $node_i$ in set $N-S$ in accordance with $x_i = 0$.
+\newline
+\newline
+{\large f.} If we take a LP reduction, then we know that: $$Pr[\text{edge in cut}] = Pr[x_i \in S, x_j \in N-S] = Pr[x_i \in S]Pr[x_j \in N-S]$$ 
+$$=(\frac{1}{4} + \frac{x_i}{2})(\frac{3}{4} - \frac{x_j}{2})$$
+$$=\frac{3}{16} - \frac{x_j}{8} + \frac{3x_i}{8} - \frac{x_i x_j}{4}$$
+$$= \frac{3}{16} - \frac{2x_j}{16} + \frac{6x_i}{16} - \frac{4x_i x_j}{16}$$
+$$= \frac{6x_i - 4x_i x_j - 2x_j + 3}{16}$$
+$$= \frac{6x_i - 2x_j(2x_i - 1) + 3}{16}$$
+$$\geq \frac{6y_{ij} - 2x_j(2y_{ij} - 1) + 3}{16}$$
+$$\geq \frac{6y_{ij} + 2(y_{ij} - 1)(2y_{ij} - 1) + 3}{16}$$
+$$= \frac{6y_{ij} + (2y_{ij} - 2)(2y_{ij} - 1) + 3}{16}$$
+$$= \frac{6y_{ij} + 4y_{ij}^2 - 2y_{ij} - 4y_{ij} + 2 + 3}{16}$$
+$$= \frac{4y_{ij}^2 + 5}{16}$$
+$$= \frac{y_{ij}^2}{4} + \frac{5}{16}$$
+$$= \frac{4y_{ij}^2}{16} + \frac{5}{16} \geq 1/2OPT$$
+
+\problemNo{2}
+{\large a.} The quadratic program for this problem is given below:
+$$\text{max}\frac{1}{2}\sum\limits_{i<j}(1 -(y_i \cdot y_j \cdot z_{ij}))$$
+$$\text{s.t.} \ y_i \in \{-1, +1\}, \forall i = 1,...,n$$
+$$z_{ij} \in \{-1, +1\}, i < j$$
+The correspondence between the problem and the quadratic program are as follows:
+$$\text{object} \ i \in \text{class} \ S \Leftrightarrow y_i = +1$$
+$$\text{object} \ i \in \text{class} \ S' \Leftrightarrow y_i = -1$$
+$$\text{similar constraint} \ i \sim j \Leftrightarrow z_{ij} = -1$$
+$$\text{dissimilar constraint} \ i \nsim j \Leftrightarrow z_{ij} = +1$$ 
+\newline
+For objects $i, j$ that are in the same class with a similarity constraint: $$y_i y_j z_{ij} = (-1)(-1)z_{ij} \ \text{or} \ (+1)(+1)z_{ij} = 1 \cdot z_{ij} = (+1)(-1) = 1 \Leftrightarrow 1 - y_i y_j z_{ij} = 2$$
+For objects $i, j$ that are in the same class with a dissimilarity constraint: $$y_i y_j z_{ij} = (-1)(-1)z_{ij} \ \text{or} \ (+1)(+1)z_{ij} = 1 \cdot z_{ij} = (+1)(+1) = -1 \Leftrightarrow 1 - y_i y_j z_{ij} = 0$$
+For objects $i, j$ that are in different classes with a similarity constraint: $$y_i y_j z_{ij} = (-1)(+1)z_{ij} \ \text{or} \ (+1)(-1)z_{ij} = -1 \cdot z_{ij} = (-1)(-1) = -1 \Leftrightarrow 1 - y_i y_j z_{ij} = 0$$
+For objects $i, j$ that are in different classes with a dissimilarity constraint: $$y_i y_j z_{ij} = (-1)(+1)z_{ij} \ \text{or} \ (+1)(-1)z_{ij} = -1 \cdot z_{ij} = (-1)(+1) = 1 \Leftrightarrow 1 - y_i y_j z_{ij} = 2$$
+where the objective function is maximizing the number of satisfied constraints. \newline
+Thus, we have given a quadratic program for this problem.
+\newline
+\newline
+{\large b.} To get a randomized approximation algorithm whose expected number of satisfied constraints is at least 0.878OPT, we apply a SDP (VP) relaxation on some quadratic program. Notice that the quadratic program that we gave in part \textbf{a} maps to the integer quadratic program for MAX CUT (shown in slide 31 of lecture 5 slides) with weights of edges = 1. We show this by mapping from our constraints problem that for objects $i, j$ that are in the same class with a similarity constraint: $$y_i y_j z_{ij} = (-1)(-1)z_{ij} \ \text{or} \ (+1)(+1)z_{ij} = 1 \cdot z_{ij} = (+1)(-1) = 1 \Leftrightarrow 1 - y_i y_j z_{ij} = 2$$ and for objects $i, j$ that are in different classes with a dissimilarity constraint: $$y_i y_j z_{ij} = (-1)(+1)z_{ij} \ \text{or} \ (+1)(-1)z_{ij} = -1 \cdot z_{ij} = (-1)(+1) = 1 \Leftrightarrow 1 - y_i y_j z_{ij} = 2$$ map to the MAX CUT problem where some edge $(i,j) \in$ cut. Similarly, we can map from our constraints problem that for objects $i, j$ that are in the same class with a dissimilarity constraint: $$y_i y_j z_{ij} = (-1)(-1)z_{ij} \ \text{or} \ (+1)(+1)z_{ij} = 1 \cdot z_{ij} = (+1)(+1) = -1 \Leftrightarrow 1 - y_i y_j z_{ij} = 0$$ and for objects $i, j$ that are in different classes with a similarity constraint: $$y_i y_j z_{ij} = (-1)(+1)z_{ij} \ \text{or} \ (+1)(-1)z_{ij} = -1 \cdot z_{ij} = (-1)(-1) = -1 \Leftrightarrow 1 - y_i y_j z_{ij} = 0$$ map to the MAX CUT problem where some edge $(i,j) \notin$ cut. The objective function of the constraints problem is maximizing the number of satisfied constraints, which maps to the objective function of the MAX CUT of maximizing the weight of the cut, but since all edge weights = 1, it would be essentially maximizing the number of edges in the cut. 
+\newline
+\newline
+Since we have shown that the constraints problem maps to the MAX CUT problem, we can take the SDP relaxation of the IQP for MAX CUT and utilize randomized vector rounding on the SDP, with the analysis being shown from slides 31 to 37 of the lecture 5 slides that the $E[weight \ of \ cut] \geq 0.878 OPT$ which implies $E[\# \ satisfied \ constraints] \geq 0.878 OPT$.
+
+\problemNo{3}
+{\large a.} \textbf{Lemma 3a} If $I$ is an independent set of $G$ then $I^k$ is an independent set of $G^{(k)}$.
+\newline
+
+\textbf{Proof:} For $I$ to be an independent set of $G$, there must be no adjacent edges between any of the nodes of $I$. Given the definition of $E^{(k)}$ of $G^{(k)}$, $$E^{(k)} = \{(u, v) \in N^{(k)} \times N^{(k)} \mid \exists i, j \in [k], (u_i, u_j) \in E \text{ or } (v_i, v_j) \in E \text{ or } (u_i, v_j) \in E\}$$ we can see that there are no edges between any pairs $(u, v)$ of $k$-tuples of nodes that only contain nodes of $I$. When taking the Cartesian product of $I$, $I^k$, we create $k$-tuples using only those nodes from $I$ so $I^k \subseteq N^{(k)}$ since $I \subseteq N$. Also, as explained earlier, the $k$-tuples of $I^k$ do not have adjacent edges between them since they only contain nodes of $I$, thus showing that $I^k$ is an independent set of $G^{(k)}$. \hfill\qed
+\newline
+\newline
+{\large b.} \textbf{Lemma 3b} If $J$ is an independent set of $G^{(k)}$ then we can construct in polynomial time an independent set $I$ of $G$ of size at least $|J|^{1/k}$ and conclude that $\alpha(G^{(k)}) = (\alpha(G))^k$
+\newline
+
+\textbf{Proof:} From Lemma 3a, if $I$ is an independent set of $G$, then $I^k$ is an independent set of $G^{(k)}$. Since we have defined $J$ to be an independent set of $G^{(k)}$, we can use Lemma 3a to say that $J = I^k$. The size of $J$ is then equal to the size of $I^k$, which is $|I|^k$, thus $|J| = |I|^k \Longrightarrow |I| = |J|^{1/k}$, showing that we can construct in polynomial time an independent set $I$ of $G$ of size at least $|J|^{1/k}$. Also, if given the maximum independent set of $G$, $\alpha(G)$, we can use our earlier conclusion and see that $(\alpha(G^{(k)}))^{1/k} = \alpha(G) \Longrightarrow \alpha(G^{(k)}) = (\alpha(G))^k$. \hfill\qed
+\newline
+\newline
+{\large c.} \textbf{Lemma 3c} If the Maximum Independent Set problem can be approximated in polynomial time within some constant factor $c > 1$, then it has a PTAS.
+\newline
+
+\textbf{Proof:} We first define $\alpha(G)$ as the maximum independent set of $G$. From the PCP theorem, we can trivially say that the Maximum Independent Set problem has a 2-approximation algorithm. Let us define $I$ as an independent set of G that agrees with the 2-approximation algorithm. This means that the size of $I$ will be $1/2$ the size of the maximum independent set of $G$, thus $\frac{|\alpha(G)|}{|I|} = 2$. Now, using Lemma 3b, if we take the $k$-th power of the graph G, we know that $\alpha(G^{(k)}) = (\alpha(G))^k$ and by Lemma 3a, $I^k$ is an independent set of $G^{(k)}$. Thus, for some $k$-th power graph $G^{(k)}$, the approximation ratio is $\frac{|\alpha(G)|^k}{|I|^k} = (\frac{|\alpha(G)|}{|I|})^k = 2^k$ which shows that the approximation ratio grows as we apply the approximation algorithm to larger and larger $k$-th powers of graph $G$. Thus, the Maximum Independent Set problem can not be approximated in polynomial time within some constant factor, which means it does not have a PTAS unless \textbf{P = NP}. \hfill\qed
+
+\problemNo{4}
+{\large a.} \textbf{Lemma 4a} MDAS can be trivially approximated within a factor of 2.
+\newline
+
+\textbf{Proof:} Suppose we have an arbitrary ordering of nodes $v_1, ..., v_n$ and we have two subsets of edges $A_1$ and $A_2$ where $$A_1 = \{(v_i, v_j) \mid (v_i, v_j) \in A, i < j\}$$ $$A_2 = \{(v_i, v_j) \mid (v_i, v_j) \in A, i > j\}$$ By separating the edges into these two subsets, the only way for $A_1$ to contain a cycle is if there is an edge where $i > j$, which would be contained in the $A_2$ subset, and the only way for $A_2$ to contain a cycle is if there is an edge where $ i < j$, which would be contained in the $A_1$ subset. Thus, neither subset will contain a cycle and at least one of the two subsets will contain at least $|A|/2$ edges since $A = A_1 + A_2$. Thus, MDAS can be trivially approximated within a factor of 2 by taking the larger of the two subsets. \hfill\qed
+\newline
+\newline
+{\large b.} \textbf{Theorem 4.2} The Maximum Directed Acyclic Subgraph (MDAS) problem does not have a PTAS unless \textbf{P = NP}.
+\newline
+
+\textbf{Proof:} A known problem that does not have a PTAS is the Maximum Independent Set (MIS) problem. MIS does not have a PTAS for any graph with a maximum degree $\geq 3$. We can do a linear reduction $MIS(3) \leq_L MDAS$: Given an undirected graph $G = (N, E)$ with maximum degree 3, we construct a directed graph $D = (V, A)$ where $V = \{(u_1, u_2) \mid u \in N\}$ and $A = \{(u_1, u_2) \mid u \in N\}  \cup \{(u_2, v_1),(v_2, u_1) \mid (u, v) \in E\}$. We let $\alpha(G)$ denote the size of the maximum independent set of $G$ and $\gamma(D)$ denote the number of edges of the maximum acyclic subgraph of $D$. From this, we have the following lemma:
+\newline
+
+\textbf{Lemma 4.2.1} For all $\epsilon > 0$, if we are given an acyclic subgraph of $D$ that has at least $(1-(\epsilon/13))\gamma(D)$ edges, then we can compute in polynomial time an independent set $G$ that has at least $(1-\epsilon)\alpha(G)$ nodes.
+\newline
+
+\textbf{Proof}:
+\newline
+\textbf{(4.2a)} If $I$ is an independent set of $G$, then $D' = (V, A')$ where $A' = \{(u_1, u_2) \mid u \in I\} \cup \{(u_2, v_1), (v_2, u_1) \mid (u, v) \in E\}$ is an acyclic subgraph of $D$. We can see that all edges $\{(u_2, v_1), (v_2, u_1) \mid (u, v) \in E\}$ do not create a cycle because as we have shown in Lemma 4a, a set of edges $\{(v_i, v_j) \mid (v_i, v_j) \in A, i > j\}$ do not create a cycle. We also know that the independent set $I$ contains nodes that do not have any adjacent edges with each other. Thus, since $A'$ contains all the linear reduction of edges of $E$, the only way to keep the edge set acyclic would be to only add the edges $\{(u_1, u_2) \mid u \in N\}$ where the nodes do not have any adjacent edges, which would be the independent set $I$ and gives us $\{(u_1, u_2) \mid u \in I\}$. Thus, if $I$ is an independent set of $G$, then $A'$ is an acyclic subgraph of $D$.
+\newline
+\newline
+\textbf{(4.2b)} Now we show that if $H$ is an acyclic subgraph of $D$ with $h$ edges, we can then derive efficiently from $H$ an independent set of $G$ with at least $h-2|E|$ nodes. As we have shown in \textbf{4.2a}, acyclic subgraphs of $D$ includes all edges $\{(u_2, v_1), (v_2, u_1) \mid (u, v) \in E\}$.  We can see that each edge of $E$ corresponds to two edges in $A$. If we took away all those edges from $H$, we would be left with edges $\{(u_1, u_2) \mid u \in N\}$ which we know are nodes that could create an independent set, as we have shown in \textbf{4.2a}. Thus, we can derive efficiently from $H$ an independent set of $G$ with at least $h-2|E|$ nodes.
+\newline
+\newline
+\textbf{(4.2c)} Lastly, since $G$ has maximum degree 3, we can show that $\alpha(G) \geq |E|/6$. Without loss of generality, lets take a node $u \in N$ that has degree 3, which would imply 4 connected nodes. If we were to make all these nodes connected together, we would have a complete graph where each of the 4 nodes would have a maximum degree of 3. This complete graph has a 6 total edges. From this complete graph, we can only choose any one node as the maximum independent set $\alpha(G)$ as all nodes are adjacent to all other nodes. Thus, we can see that $\alpha(G) \geq |E|/6$.
+\newline
+\newline
+Let us do the linear reduction from MIS to MDAS. From \textbf{4.2b} we know we can get an acyclic subgraph of $D$ with $|I| + 2|E|$ edges. If $I = \alpha(G)$, then getting an acyclic subgraph $D$ with $\alpha(G) + 2|E|$ would imply a maximum acyclic subgraph $\gamma(D)$. We can manipulate our conclusion from \textbf{4.2c} where $\alpha(G) \geq |E|/6 \Longrightarrow |E| \leq 6\cdot\alpha(G)$. Thus, we can say $$\gamma(D) = \alpha(G) + 2|E| \leq \alpha(G) + 12\cdot\alpha(G) = 13\cdot\alpha(G)$$ Based on this L-reduction, it satisfies the first property that $OPT_{MDAS} \leq \alpha \cdot OPT_{MIS}$ where $\alpha = 13$. We can also see it satisfies the second property $|C_1 - OPT_{MIS}| = \beta\cdot|C_2 - OPT_{MDAS}|$ where $\beta = 1$. Combining both properties, we get the relative error: $$\frac{|C_1 - OPT_{MIS}|}{OPT_{MIS}} \leq \frac{\alpha\cdot\beta\cdot|C_2 - OPT_{MDAS}|}{OPT_{MDAS}} \leq \alpha\beta\epsilon$$ Showing that the relative error of MIS is $13\cdot \epsilon$ in relation to the relative error of MDAS being $\epsilon$. Thus, if we wanted to express the relative error of MIS as just $\epsilon$, that would mean that the relative error of MDAS would be $\epsilon/13$. Thus for all $\epsilon > 0$, if we are given an acyclic subgraph of $D$ that has at least $(1-(\epsilon/13))\gamma(D)$ edges, then we can compute in polynomial time an independent set $G$ that has at least $(1-\epsilon)\alpha(G)$ nodes, which proves the lemma. \hfill\qed
+\newline
+\newline
+But because MIS does not have a PTAS as we have proven in problem 3, and since $MIS \leq_L MDAS$, that tells us that MDAS also does not have a PTAS unless \textbf{P = NP}, thus the theorem is proved\cite{KoMa14}. \hfill\qed
+
+\nocite{*}
+\bibliographystyle{acm}
+\bibliography{references}
+\end{document}
