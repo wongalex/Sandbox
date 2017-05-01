@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.17 (TeX Live 2016) (preloaded format=pdflatex 2016.5.22)  1 MAY 2017 13:27
+This is pdfTeX, Version 3.14159265-2.6-1.40.17 (TeX Live 2016) (preloaded format=pdflatex 2016.5.22)  1 MAY 2017 14:30
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -696,16 +696,6 @@ Underfull \hbox (badness 10000) in paragraph at lines 403--410
 
  []
 
-
-Underfull \hbox (badness 10000) in paragraph at lines 403--410
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 413--414
-
- []
-
 [11] (./AlexWongResearchPaper.bbl [12]) [13] (./AlexWongResearchPaper.aux) ) 
 Here is how much of TeX's memory you used:
  13191 strings out of 493014
@@ -714,7 +704,7 @@ Here is how much of TeX's memory you used:
  16535 multiletter control sequences out of 15000+600000
  16038 words of font info for 62 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 43i,19n,70p,1352b,409s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 43i,19n,70p,1410b,409s stack positions out of 5000i,500n,10000p,200000b,80000s
 </u
 sr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb></us
 r/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr
@@ -738,7 +728,7 @@ t/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/local/texlive/2016/texmf-dist/
 fonts/type1/public/amsfonts/cm/cmti10.pfb></usr/local/texlive/2016/texmf-dist/f
 onts/type1/public/amsfonts/cm/cmtt12.pfb></usr/local/texlive/2016/texmf-dist/fo
 nts/type1/public/amsfonts/symbols/msbm10.pfb>
-Output written on AlexWongResearchPaper.pdf (13 pages, 305620 bytes).
+Output written on AlexWongResearchPaper.pdf (13 pages, 307150 bytes).
 PDF statistics:
  135 PDF objects out of 1000 (max. 8388607)
  97 compressed objects within 1 object stream
