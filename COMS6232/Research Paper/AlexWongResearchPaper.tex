@@ -15,18 +15,18 @@
 \begin{document}
 \maketitle
 \begin{abstract}
-We look at the state of the art algorithm for the general case of the Asymmetric Traveling Salesman problem and its current known inapproximability bounds. The currently best algorithm, by Asadpour et al.\cite{AGM10}, details an $O$(log $n$ / log log $n$)-approximation algorithm for the general case of ATSP for costs satisfying the triangle inequality. An algorithm by Karpinski et al.\cite{KLS15} gives us a hardness of approximation bounds of 75 / 74 for ATSP. We also briefly touch on some constant factor approximation algorithms and recently new heuristics for special cases of ATSP, including an approach by Svensson et al.\cite{STV16} that details a constant factor approximation algorithm for a special case of ATSP that contains only two different edge weights of arbitrary weight where the costs satisfy the triangle inequality.
+We look at the state of the art algorithm for the general case of the Asymmetric Traveling Salesman problem and its current known inapproximability bounds. The currently best algorithm, by Asadpour et al.\cite{AGM10}, details an $O$(log $n$ / log log $n$)-approximation algorithm for the general case of ATSP for costs satisfying the triangle inequality. An algorithm by Karpinski et al.\cite{KLS15} gives us a hardness of approximation bounds of 75 / 74 for ATSP. We also briefly touch on some recent work on approximation factors of special cases of ATSP, including an approach by Svensson et al.\cite{STV16} that details a constant factor approximation algorithm for a special case of ATSP that contains only two different edge weights of arbitrary weight where the costs satisfy the triangle inequality.
 \end{abstract}
 %%%%%%%%%%%%%%%%%%%%Section 1 Introduction%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Introduction}
 The traveling salesman problem is one of the most well-known and studied problems in theoretical computer science and operations research. Many real world problems, from delivery routing to latency networks to DNA sequencing, can be framed as some variation of the traveling salesman problem. In this paper, we look at the current state of the art algorithms for the asymmetric traveling salesman problem (ATSP) where the costs satisfy the triangle inequality (costs from some point $u$ to point $w$ is at most the cost from point $u$ to point $v$ + cost from point $v$ to point $w$) but the cost from some point $u$ to point $v$ does not necessarily equal the cost from point $v$ to point $u$. From this description, we can frame the symmetric traveling salesman problem (the cost from some point $u$ to point $v$ does equal the cost from point $v$ to point $u$) as a special case of ATSP. \newline
 \indent In Section 2, we provide an overview of an $O$(log $n$ / log log $n$)-approximation algorithm for the general case of ATSP for costs satisfying the triangle inequality which comes from the work of Asadpour et al. \cite{AGM10}. The $O$(log $n$ / log log $n$)-approximation algorithm introduces the concept of the "thinness" of a spanning tree where the thinness correlates with the approximation bound of ATSP. This is an improvement over the decades-long standing $\Theta$(log$n$)-approximation bound given by the work of Frieze et al. \cite{FGM83}. \newline
-\indent In section 4 \newline
+\indent In section 4, we detail some of the recent work for special cases of ATSP.  Gharan and Saberi showed that there is a constant factor approximation on ATSP of planar graphs and graphs with bounded genus \cite{GS11}. Anari and Gharan showed that the integrality gap of ATSP is $O$(poly log log $n$) \cite{AG15}, but there is no current method known to construct a solution of $O$(poly log log $n$)-approximation. The recent work of Svensson et al. showcased a new heuristic for tackling approximating ATSP \cite{Sve15}, with a constant factor approximation on a special case of ATSP that contains only two different edge weights \cite{STV16}. \newline
 \indent Lastly, in section 5, we conclude with opinions on the hypothesized next steps towards a constant factor approximation algorithm for ATSP.
 
 %%%%%%%%%%%%%%%%%%%%Section 2 An O logn / loglogn approx algo%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{An $O$(log $n$ / log log $n$)-approximation algorithm for ATSP}
-Algorithm 1, on the next page, details the $O$(log $n$ / log log $n$)-approximation algorithm for ATSP (from \cite{AGM10} section 1). 
+Algorithm 1  details the $O$(log $n$ / log log $n$)-approximation algorithm for ATSP (from \cite{AGM10} section 1). 
 \begin{algorithm}
 \caption{An $O$(log $n$ / log log $n$)-approximation algorithm for ATSP \cite{AGM10}}
 \begin{algorithmic}
@@ -42,6 +42,7 @@ Algorithm 1, on the next page, details the $O$(log $n$ / log log $n$)-approximat
 \STATE{4. Find a minimum cost integral circulation that contains the oriented tree $\overrightarrow{T}^*$. This will give us a multigraph. Shortcut the multigraph to get a Eulerian tour and output the result.}
 \end{algorithmic}
 \end{algorithm}
+\newline
 Throughout the rest of this section, we will divide each step of the algorithm into subsection(s) to describe it in more detail and/or prove its correctness.
 
 %Section 2.1 Preliminaries and Notation%
@@ -57,18 +58,18 @@ In this subsection, we describe much of the notation that will be used throughou
   \delta^{-}(U) := \{a = (u, v) \in A : u \notin U, v \in U\},
 \end{equation*}
 \begin{equation*}
-  \delta(U) := \delta^{+}(U) \cup \delta^{-}(U),
-\end{equation*}
-\begin{equation*}
   A(U) := \{a = (u, v) \in A : u \in U, v \in U\}
 \end{equation*}
-to be the set of arcs that are leaving, entering, and contained in $U$, respectively. We also define $\delta^{+}(v) :=\delta^{+}(\{v\})$ and $\delta^{-}(v) :=\delta^{-}(\{v\})$ for each single vertex $v$. For an undirected graph, $\delta(U)$ represents the set of edges with just one endpoint in $U$ and $E(U)$ represents the edges that are contained within $U$. Lastly, all $log$ in equations represents the natural logarithm. \newline
+\begin{equation*}
+  \delta(U) := \delta^{+}(U) \cup \delta^{-}(U),
+\end{equation*}
+to be the set of arcs that are leaving, entering, contained in $U$, and total of incoming and outgoing arcs, respectively. We also define $\delta^{+}(v) :=\delta^{+}(\{v\})$ and $\delta^{-}(v) :=\delta^{-}(\{v\})$ for each single vertex $v$. For an undirected graph, $\delta(U)$ represents the set of edges with just one endpoint in $U$ and $E(U)$ represents the edges that are contained within $U$. Lastly, all $log$ in equations represents the natural logarithm. \newline
 \indent We say that a spanning tree $T$ is $\alpha$-thin with respect to $\textbf{z}$  if and only if: 
 \begin{equation*}
 |T \cap \delta(U)| \leq \alpha \cdot z(\delta(U)) \indent \forall U \subset V
 \end{equation*}
 which essentially states that for all the subsets of vertices $U$ of the spanning tree T, the number of edges in the cut between $U$ and $V \backslash U$ must be $\leq$ the thinness multiplied by the cost of the edges in the cut. \newline
-\indent We also say that T is $(\delta, s)$-thin with respect to $\textbf{z}$ if and only if it is $\alpha$-thin and $c(T) \leq s \cdot OPT_{HK}$, which essentially states that the cost of $T$ is at most $s$ times the cost of the optimal Held-Karp solution.
+\indent We also say that T is $(\alpha, s)$-thin with respect to $\textbf{z}$ if and only if it is $\alpha$-thin and $c(T) \leq s \cdot OPT_{HK}$, which essentially states that the cost of $T$ is at most $s$ times the cost of the optimal Held-Karp solution.
 \indent By showing that a spanning tree is "thin", we would be able to get a Eulerian augmentation of the spanning tree where the total cost is within a factor of $\alpha$ of the cost $OPT_{HK}$, which implies within the same factor of the optimum solution.
 
 %Section 2.2 The Held-Karp Relaxation%
@@ -100,10 +101,10 @@ This relaxation is accurate since (2) makes sure that all the vertices are stron
 \indent As mentioned in step 2 of the algorithm , we let $E$ be the support of $\textbf{z}^*$. We also let $A$ be the support of $\textbf{x}^*$ where $A = \{(u, v) : x_{uv}^{*} > 0 \}$. We also define the costs of all edges $e \in E$ where $c(e) = min \{c(a) : a \in \{(u, v), (v, u)\} \cap A \}, \ \forall e \in E$. This shows that $c(\textbf{z}*) < c(\textbf{x}*)$. Now we can prove the rest of step 1 of the algorithm and define a lemma:
 \newline
 \newline
-\textbf{Lemma 2.1:} The vector $\textbf{z}^*$ belongs to the relative interior of the spanning tree polytope P.
+\textbf{Lemma 2.1 (\cite{AGM10}, section 3):} The vector $\textbf{z}^*$ belongs to the relative interior of the spanning tree polytope P.
 \newline
 \newline
-\textbf{Proof:} From the characterization of the base polytope of a matroid given by Edmonds\cite{Edm71}, it follow that the spanning tree polytope P is defined by the following inequalities (see Corollary 50.7c of \cite{Sch03}):
+\textbf{Proof:} From the characterization of the base polytope of a matroid given by Edmonds\cite{Edm71}, it follows that the spanning tree polytope P is defined by the following inequalities (see Corollary 50.7c of \cite{Sch03}):
 \begin{equation}
 P = \{z \in \mathbb{R}^E : z(E) = |V| - 1,
 \end{equation}
@@ -113,13 +114,138 @@ z(E(U)) \leq |U| - 1 \indent \forall U \subset V \ where \ U \neq \emptyset,
 \begin{equation}
 z_e \geq 0 \indent \forall e \in E.\}
 \end{equation}
-From this, we see that $\textbf{z}^*$ satisfies inequality (6) because:
+Thus, for some vector z to belong in the relative interior of P, it must satisfy both inequalities (7) and (8) strictly ($z(E(U)) < |U| - 1$ and $z_e > 0$). \newline
+From the above equations, we see that $\textbf{z}^*$ satisfies constraint (6) because:
 \begin{equation*}
 \forall v \in V, \textbf{x}^*(\delta^+(v)) = 1 \ \ \Rightarrow \ \ \textbf{x}^*(A) = n = |V| \ \ \Rightarrow \ \ \textbf{z}^*(E) = n - 1 = |V| - 1
 \end{equation*}
+Now, consider any set $U \subset V$ where $U \neq \emptyset$. We get that
+\begin{equation*}
+\sum\limits_{v \in U}\textbf{x}^*(\delta^+(v)) \ = \  |U| \ = \ \textbf{x}^*(A(U)) + \textbf{x}^*(\delta^+(U)) \ \geq \ \textbf{x}^*(A(U)) + 1
+\end{equation*}
+\begin{equation*}
+\Rightarrow \ \textbf{x}^*(A(U)) \ \leq \ |U| - 1
+\end{equation*}
+We see that $\textbf{x}^*$ satisfies constraints (2) and (3), so we can use equation (5) to show
+\begin{equation*}
+\textbf{z}^*(E(U)) = \frac{n - 1}{n}\textbf{x}^*(A(U)) < \textbf{x}^*(A(U)) \leq |U| - 1
+\end{equation*}
+\begin{equation*}
+\Rightarrow \ \textbf{z}^*(E(U)) < |U| - 1
+\end{equation*}
+where we see that $\textbf{z}^*$ satisfies inequality (7) strictly. Also, since E is the support of $\textbf{z}^*$, that means $\textbf{z}^*$ also satisfies inequality (8) strictly. Thus, we can conclude that $\textbf{z}^*$ is in the relative interior of P. \hfill\qed
+\newline
+\newline
+We also make a note that since $\textbf{x}^*$ is an optimum extreme point solution, it's known that its support $A$ has at most $3n - 4$ arcs (see \cite{Goe06}, Theorem 15). Also, $\textbf{x}^*$ can be expressed as the unique solution (due to global minima of a convex program) of an invertible system with only 0 - 1 coefficients, then every entry $\textbf{x}_{a}^{*}$ is rational with an integral numerator and denominator bounded by $2^{O(nlogn)}$, thus we can say that $\textbf{z}_{min}^{*} > 2^{-O(nlogn)}$ (see \cite{AGM10} section 3).
 
-%Section 2.4 Maximum Entropy Distribution%
+%Section 2.4 Thin Tree Properties%
+\subsection{Thin Trees and Their Relation to ATSP}
+A crucial element to the algorithm of approximating ATSP is the notion of thin trees. In section 2.1, we briefly described what "thinness" means and what properties a thin tree has. We will now detail it further to showcase why thin trees are crucial to this approximation algorithm and prove its correctness. \newline
+\indent We jump to step 4 of the algorithm to prove it. First, though, a theorem that is required for the proof of correctness of thin trees is Hoffman's circulation theorem. A circulation is essentially any function $f : A \rightarrow \mathbb{R}$ such that $f(\delta^+(v)) = f(\delta^-(v))$ for each vertex $v \in V$. Hoffman's circulation theorem gives a necessary and sufficient condition for the existence of circulation on the arcs subject to the arcs' lower and upper capacities. The following is Hoffman's circulation theorem (we won't prove Hoffman's circulation theorem; see \cite{Sch03}, Theorem 11.2 for the proof):
+\newline
+\newline
+\textbf{Theorem 2.2 (Hoffman's Circulation Theorem\cite{Sch03}):} Given lower and upper capacities $l, u : A \rightarrow \mathbb{R}$, there exists a circulation $f$ satisfying $l(a) \leq f(a) \leq u(a)$ for all $a \in A$ if and only if:
+\newline \indent 1. $l(a) \leq u(a)$ for all $a \in A$ and
+\newline \indent 2. for all subsets $U \subseteq V$, we have $l(\delta^-(U)) \leq u(\delta^+(U))$.
+\newline Furthermore, if $l$ and $u$ are integer-valued, $f$ can be chosen to be integer-valued too.
+\newline
+\newline
+Given this theorem on circulation, we now provide a theorem that proves that the ability to find an $(\alpha, s)$-thin spanning tree with respect to $\textbf{z}^*$, for some $\alpha$ and $s$, translates directly into an ability to obtain an $(2\alpha + s)$-approximation to ATSP:
+\newline
+\newline
+\textbf{Theorem 2.3 (\cite{AGM10}, section 4):} Let $\textbf{x}^*$ be an optimal solution to the Held-Karp relaxation and $\textbf{z}^*$ to be the symmetrized and scaled down version of $\textbf{x}^*$ defined in (5). if $T^*$ is an $(\alpha, s)$-thin spanning tree with respect to $\textbf{z}^*$ for some $\alpha$ and $s$, then we can find, in polynomial-time, a Hamiltonian cycle whose cost is at most $(2\alpha + s)c(\textbf{x}^*) = (2\alpha + s)OPT_{HK} \leq (2\alpha + s)OPT$.
+\newline
+\newline
+\textbf{Proof:} We first orient the edges $(u, v)$ of $T^*$ to minimize the cost of $T^*$ where each arc $a \in T^* = min\{c(a) : a \in \{(u, v), (v, u)\} \cap A\}$, and we denote the oriented tree as $\overrightarrow{T}^*$. Notice that by the definition of the undirected cost function that we defined back in section 2.3, we have $c(\overrightarrow{T}^*) = c(T^*)$. \newline
+\indent Lets now consider an augmentation of minimum cost to make $\overrightarrow{T}^*$ an Eulerian directed graph. To get the augmentation, we can translate it as a minimum cost circulation problem with integral lower capacities and a bound on the upper capacities bsed on what we want to prove here in Theorem 2.3. So, we first set the lower capacities of the arcs by 
+\begin{equation*}
+l(a) =
+  \begin{cases}
+    1 \indent a \in \overrightarrow{T}^* \\
+    0 \indent a \notin \overrightarrow{T}^* \\
+  \end{cases}
+\end{equation*}
+and the minimum circulation problem is $min\{c(f) : f$ is a circulation and $f(a) \geq l(a), \ \forall a \in A\}$. This minimum circulation problem is well known so we do not prove it here (see \cite{Sch03}, Corollary 12.2a for the proof). The minimum cost circulation problem's proof will give us an optimal integral circulation solution $f^*$ in polynomial time. When we augment this solution with $\overrightarrow{T}^*$, we end up with a directed multigraph that is Eulerian (indegree = outdegree $\forall v \in V$), which we will define as $H$. Thus, $H$ is strongly connected so we can take a Eulerian tour and shortcut it to get a Hamiltonian cycle of cost $\leq c(f^*)$. \newline
+\indent The last part of this proof is showing an upper bound on $c(f^*)$. As we stated in our theorem, we are looking for cost $\leq (2\alpha + s)c(\textbf{x}^*)$, meaning that $c(f^*) \leq (2\alpha + s)c(\textbf{x}^*)$. So, we can define the upper capacities of the arc by
+\begin{equation*}
+u(a) =
+  \begin{cases}
+    1 + 2\alpha x_{a}^{*} \indent a \in \overrightarrow{T}^* \\
+    2\alpha x_{a}^{*} \indent \indent \  a \notin \overrightarrow{T}^*. \\
+  \end{cases}
+\end{equation*}
+Now, we claim that there $\exists$ a circulation g where $l(a) \leq g(a) \leq u(a) \ \forall a \in A$. This implies that
+\begin{equation*}
+c(f^*) \leq c(g) \leq c(u) = c(\overrightarrow{T}^*) + 2\alpha c(\textbf{x}^*) \leq (2\alpha + s)c(\textbf{x}^*),
+\end{equation*}
+which gives us the bound we want for $c(f^*)$. To prove this claim, we see that the $\alpha$-thinness of $T^*$ implies that for any $U \subseteq V$, the number of arcs of $\overrightarrow{T}^*  \in \delta^-(U) \leq \alpha \textbf{z}^*(\delta(U))$, regardless of the orientation where $T^*$ oriented to $\overrightarrow{T}^* $. Thus, we can say that
+\begin{equation*}
+  l(\delta^-(U)) \leq \alpha \textbf{z}^*(\delta(U))
+\end{equation*}
+and by using a combination of (4) and (5), we can say that
+\begin{equation*}
+  l(\delta^-(U)) \leq \alpha \textbf{z}^*(\delta(U)) < 2\alpha \textbf{x}^*(\delta^-(U)).
+\end{equation*}
+We also know that 
+\begin{equation*}
+ 2\alpha \textbf{x}^*(\delta^+(U)) \leq u(\delta^+(U)). 
+\end{equation*}
+By equation (4), we can say that 
+\begin{equation*}
+2\alpha \textbf{x}^*(\delta^+(U)) = 2\alpha \textbf{x}^*(\delta^-(U)).
+\end{equation*}
+So, we can finally conclude 
+\begin{equation*}
+  l(\delta^-(U)) \leq 2\alpha \textbf{x}^*(\delta^-(U)) = 2\alpha \textbf{x}^*(\delta^+(U)) \leq u(\delta^+(U))
+\end{equation*}
+\begin{equation*}
+\Rightarrow l(\delta^-(U)) \leq u(\delta^+(U))
+\end{equation*}
+for any $U \subseteq V$, thus showing that the circulation g does exist, which concludes the proof of this theorem. \hfill\qed
+%Section 2.5 Maximum Entropy Distribution%
 \subsection{Maximum Entropy Distribution}
+In this subsection, we detail the approach on how to find an entropy distribution $p(.)$. We let $\mathcal{T}$ represent the collection of all spanning trees of $G = (V, E)$ and let \textbf{z} represent some arbitrary point in the relative interior of the spanning tree polytope $P$ of $G$. We now let $p^*(.)$ be the maximum entropy distribution with respect to the marginal probabilites imposed by \textbf{z}. This is considered the optimum solution of the following convex program:
+\begin{equation}
+inf \indent \sum\limits_{T \in \mathcal{T}}p(T)logp(T)
+\end{equation}
+\begin{equation*}
+s.t. \indent \sum\limits_{T \ni e}p(T) = z_e \indent \forall e \in E,
+\end{equation*}
+\begin{equation*}
+\indent \ \ p(T) \geq 0 \indent \forall T \in \mathcal{T}.
+\end{equation*}
+This convex program is feasible since \textbf{z} is in the relative interior of the spanning tree polytope P and as the objective function is bounded and the feasible region is compact, the infinum (greatest lower bound) is found, which conveys the existence of an optimal solution $p^*(.)$. Also, since the objective function is stricly convex (any local minima is essentially a global minima), this implies that the maximum entropy distribution $p^*(.)$ is unique. $OPT_{CP}$ will represent the optimum value of the convex program (9). \newline
+\indent We define $p(T)$ as the probability of sampling a spanning tree $T$ in $p(.)$. Also, for any feasible solution $p(.)$, we have $\sum\limits_{T}p(T) = 1$ because
+\begin{equation*}
+n - 1 = \sum\limits_{e \in E}z_e = \sum\limits_{e \in E}\sum\limits_{T \ni e}p(T) = (n - 1)\sum\limits_{T}p(T)
+\end{equation*}
+based on the constraints given by convex program (9). \newline
+\indent Now, assuming that \textbf{z} is in the relative interior of the spanning tree polytope P, we want to now show that show that $p^*(T) > 0 \ \ \forall T \in \mathcal{T}$ and that $p^*(T)$ gives a simple exponential formula. To show this, we find the Lagrange to the convex program (9). Thus, $\forall e \in E$, we have a Lagrange multiplier $\delta_e$ (not to be confused with $\delta^-$ and $\delta^+$ which represents incoming and outgoing edges, respectively) to the constraint corresponding to the marginal probability $z_e$, and we define the Lagrange function as
+\begin{equation*}
+L(p,\delta) = \sum\limits_{T \in \mathcal{T}}p(T)logp(T) - \sum\limits_{e \in E}\delta_e\bigg(\sum\limits_{T \ni e}p(T) - z_e\bigg) 
+\end{equation*}
+which can be rewritten as
+\begin{equation*}
+L(p,\delta) = \sum\limits_{e \in E}\delta_ez_e + \sum\limits_{T \in \mathcal{T}}\bigg(p(T)logp(T)  - p(T) \sum\limits_{e \in T}\delta_e\bigg)
+\end{equation*}
+thus making the Lagrange dual to the convex program (9)
+\begin{equation}
+\sup_{\delta}\inf_{p \geq 0}L(p,\delta)
+\end{equation}
+We solve the inner infimum. Since each of the contributions of $p(T)$ is seperable, then $\forall T \in \mathcal{T}$, $p(T)$ must minimize the convex function $p(T)logp(T) - p(T)\delta(T)$ where $\delta(T) = \sum\limits_{e \in T}\delta_e$. Now, taking partial derivatives of the convex function with respect to $p(T)$, we get
+\begin{equation*}
+1 + logp(T) - \delta(T) = 0
+\end{equation*}
+\begin{equation*}
+logp(T) = \delta(T) - 1
+\end{equation*}
+\begin{equation}
+p(T) = e^{\delta(T) - 1}
+\end{equation}
+So, the inner infimum
+\begin{equation*}
+\inf_{p \geq 0}L(p,\delta) = \sum\limits_{e \in E}\delta_ez_e - \sum\limits_{T \in \mathcal{T}}e^{\delta(T) - 1}
+\end{equation*}
 In the latter part of step 2 of the algorithm, to find the weights $\tilde{\gamma}_{e}, \forall e \in E$, requires lengthy non-trivial calculations which will not be detailed within this paper. There are two methods to find $\tilde{\gamma}_{e}$'s: either the combinatorial approach (see \cite{AGM10} section 7) where the basic idea is to iteratively tweak the weights of $\tilde{\gamma}_{e}$ until their marginals $= (1 + \epsilon/2)z_e$ or the ellipsoid method (see \cite{AGM10} section 8) where the basic idea is to find a near optimal solution of the dual of the convex program.
 
 %%%%%%%%%%%%%%%%%%%%Section 3 An Inapproximability Bounds of ATSP%%%%%%%%%%%%%%%%%%%%%%%%%%%%
