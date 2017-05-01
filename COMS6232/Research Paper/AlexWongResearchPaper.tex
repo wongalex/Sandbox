@@ -21,8 +21,9 @@ We look at the state of the art algorithm for the general case of the Asymmetric
 \section{Introduction}
 The traveling salesman problem is one of the most well-known and studied problems in theoretical computer science and operations research. Many real world problems, from delivery routing to latency networks to DNA sequencing, can be framed as some variation of the traveling salesman problem. In this paper, we look at the current state of the art algorithms for the asymmetric traveling salesman problem (ATSP) where the costs satisfy the triangle inequality (costs from some point $u$ to point $w$ is at most the cost from point $u$ to point $v$ + cost from point $v$ to point $w$) but the cost from some point $u$ to point $v$ does not necessarily equal the cost from point $v$ to point $u$. From this description, we can frame the symmetric traveling salesman problem (the cost from some point $u$ to point $v$ does equal the cost from point $v$ to point $u$) as a special case of ATSP. \newline
 \indent In Section 2, we provide an overview of an $O$(log $n$ / log log $n$)-approximation algorithm for the general case of ATSP for costs satisfying the triangle inequality which comes from the work of Asadpour et al. \cite{AGM10}. The $O$(log $n$ / log log $n$)-approximation algorithm introduces the concept of the "thinness" of a spanning tree where the thinness correlates with the approximation bound of ATSP. This is an improvement over the decades-long standing $\Theta$(log$n$)-approximation bound given by the work of Frieze et al. \cite{FGM83}. \newline
+\indent In Section 3, we give an overview of the tools and methods used to derive the currently best known inapproximability bounds for ATSP. Karpinski \newline
 \indent In section 4, we detail some of the recent work for special cases of ATSP.  Gharan and Saberi showed that there is a constant factor approximation on ATSP of planar graphs and graphs with bounded genus \cite{GS11}. Anari and Gharan showed that the integrality gap of ATSP is $O$(poly log log $n$) \cite{AG15}, but there is no current method known to construct a solution of $O$(poly log log $n$)-approximation. The recent work of Svensson et al. showcased a new heuristic for tackling approximating ATSP \cite{Sve15}, with a constant factor approximation on a special case of ATSP that contains only two different edge weights \cite{STV16}. \newline
-\indent Lastly, in section 5, we conclude with opinions on the hypothesized next steps towards a constant factor approximation algorithm for ATSP.
+\indent Lastly, in section 5, we conclude with opinions on the hypothesized next steps towards a constant factor approximation algorithm for the general case of ATSP.
 
 %%%%%%%%%%%%%%%%%%%%Section 2 An O logn / loglogn approx algo%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{An $O$(log $n$ / log log $n$)-approximation algorithm for ATSP}
@@ -63,7 +64,7 @@ In this subsection, we describe much of the notation that will be used throughou
 \begin{equation*}
   \delta(U) := \delta^{+}(U) \cup \delta^{-}(U),
 \end{equation*}
-to be the set of arcs that are leaving, entering, contained in $U$, and total of incoming and outgoing arcs, respectively. We also define $\delta^{+}(v) :=\delta^{+}(\{v\})$ and $\delta^{-}(v) :=\delta^{-}(\{v\})$ for each single vertex $v$. For an undirected graph, $\delta(U)$ represents the set of edges with just one endpoint in $U$ and $E(U)$ represents the edges that are contained within $U$. Lastly, all $log$ in equations represents the natural logarithm. \newline
+to be the set of arcs that are leaving, entering, contained in $U$, and total of incoming and outgoing arcs, respectively. We also define $\delta^{+}(v) :=\delta^{+}(\{v\})$ and $\delta^{-}(v) :=\delta^{-}(\{v\})$ for each single vertex $v$. For an undirected graph, $\delta(U)$ represents the set of edges with just one endpoint in $U$, and $E(U)$ represents the edges that are contained within $U$. Lastly, all $log$ in equations represents the natural logarithm. \newline
 \indent We say that a spanning tree $T$ is $\alpha$-thin with respect to $\textbf{z}$  if and only if: 
 \begin{equation*}
 |T \cap \delta(U)| \leq \alpha \cdot z(\delta(U)) \indent \forall U \subset V
@@ -304,6 +305,58 @@ L_{i,j} =
     0 \indent \indent \indent \indent \ otherwise.
   \end{cases}
 \end{equation*}
+To put it in words, the Laplacian entry $L_{i,j}$ is equal to the negative $\lambda$ weight of edge $e$ assuming there exists an edge $e = (i, j) \in E$, or equal to the sum of all the $\lambda$ weights of all incoming and outgoing edges of the vertice $i \in V$, or it is 0 otherwise. \newline
+\indent A concentration bound is key to establishing the thinness of a sampled tree. Thus, we derive the concentration bounds with the following theorem:
+\newline
+\newline
+\textbf{Theorem 2.6 (see \cite{AGM10}, section 5):} For each edge $e$, let $X_e$ be an indicator random variable associated with the event $[e \in T]$, where $T$ is a sampled $\lambda$-random tree. Also, for any subset $C$ of the edges of $G$, we define $X(C) = \sum\limits_{e \in C}X_e$. Then we have
+\begin{equation*}
+Pr[X(C) \geq (1 + \delta)E[X(C)]] \leq \bigg(\frac{e^{\delta}}{(1 + \delta)^{1 + \delta}}\bigg)^{E[X(C)]}.
+\end{equation*}
+Usually, in order to obtain concentration bounds, we would prove that the variables $\{X_e\}_E$ are independent and use Chernoff bounds. But, our variables $\{X_e\}_E$ are not independent. Rather, they are negatively correlated since our probability distribution is in product form (\cite{LP14}, Ch. 4). Thus, we get the following lemma:
+\newline
+\newline
+\textbf{Lemma 2.7 (\cite{AGM10}, Section 5):} The indicator random variables $\{X_e\}_E$ are negatively correlated.
+\newline
+\newline
+Now, since we have determined that the random variables are negatively correlated, we can use the fact that the upper tail part of the Chernoff bound only requires negative correlation \cite{PS97}.
+
+%Section 2.7 O(log n /log log n) Thinness of the Sampled Tree%
+\subsection{O(log n / log log n) Thinness of the Sampled Tree}
+We first define $\tilde{p}(.)$ as the exponential family distribution that we get from applying Theorem 2.5 to $\textbf{z}^*$. We prove that a sampled tree from $\tilde{p}(.)$ is almost surely "thin". But first, we prove that if we look at a particular cut, the corresponding sampled tree will have the $\alpha$-thinness property with high probability where $\alpha = O(\frac{logn}{loglogn})$.
+\newline
+\newline
+\textbf{Lemma 6.1 (\cite{AGM10}, Section 6):} If $T$ is a spanning tree sample from distribution $\tilde{p}(.)$ for $\epsilon = 0.2$ in a graph $G$ with $n \geq 5$ vertices then, for any subset $U \subset V$,
+\begin{equation*}
+Pr[|T \cap \delta(U)| > \beta z^*(\delta(U))] \leq n^{-2.5z^*(\delta(U))},
+\end{equation*}
+where $\beta = 4 logn / loglogn$.
+\newline
+\newline
+\textbf{Proof (\cite{AGM10}, Section 6):} $\forall e \in E, \tilde{z}_e \leq (1 + \epsilon)z_{e}^{*}$, where $\epsilon = 0.2$ is our desired accuracy of approximation of $\textbf{z}^*$ by $\tilde{z}$ as given in subsection 2.5, Theorem 2.5. Thus
+\begin{equation*}
+E[|T \cap \delta(U)|] = \tilde{z}(\delta(U)) \leq (1 + \epsilon)z^*(\delta(U)).
+\end{equation*}
+Applying Theorem 2.6 with
+\begin{equation*}
+1 + \delta = \beta \frac{\textbf{z}^*(\delta(U))}{\tilde{z}(\delta(U))} \geq \frac{\beta}{1 + \epsilon}
+\end{equation*}
+we get $Pr[|T \cap \delta(U)| > \beta \textbf{z}^*(\delta(U))]$ which can be bounded from above by
+\begin{equation*}
+Pr\Big[|T \cap \delta(U)| > (1 + \delta)E[|T \cap \delta(U)|\Big] \leq \bigg(\frac{e^{\delta}}{(1 + \delta)^{1 + \delta}}\bigg)^{\tilde{z}(\delta(U))} \leq \bigg(\frac{e}{1 + \delta}\bigg)^{(1 + \delta)\tilde{z}(\delta(U))}
+\end{equation*}
+\begin{equation*}
+= \bigg(\frac{e}{1 + \delta}\bigg)^{\beta z^*(\delta(U))} \leq \Bigg[\bigg(\frac{e(1 + \epsilon)}{\beta}\bigg)^\beta\Bigg]^{z^*(\delta(U))} \leq n^{-2.5z^*(\delta(U))}
+\end{equation*}
+Where in the last inequality, we did
+\begin{equation*}
+log\Bigg[\bigg(\frac{e(1 + \epsilon)}{\beta}\bigg)^\beta\Bigg] = 4\frac{logn}{loglogn}[1 + log(1 + \epsilon) - log(4) - log log n + logloglogn]
+\end{equation*}
+\begin{equation*}
+\leq -4logn\bigg(1-\frac{logloglogn}{loglogn}\bigg) \leq -4\bigg(1 - \frac{1}{e}\bigg)logn \leq -2.5logn,
+\end{equation*}
+\newline
+because $e(1 + \epsilon) < 4$ and $\frac{logloglogn}{loglogn} \leq \frac{1}{e}$ for all $n \geq 5$. \hfill\qed
 %%%%%%%%%%%%%%%%%%%%Section 3 An Inapproximability Bounds of ATSP%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Inapproximability Bounds of ATSP}
 
