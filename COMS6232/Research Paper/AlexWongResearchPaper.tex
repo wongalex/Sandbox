@@ -323,7 +323,7 @@ Now, since we have determined that the random variables are negatively correlate
 
 %Section 2.7 O(log n /log log n) Thinness of the Sampled Tree%
 \subsection{O(log n / log log n) Thinness of the Sampled Tree}
-We first define $\tilde{p}(.)$ as the exponential family distribution that we get from applying Theorem 2.5 to $\textbf{z}^*$. We prove that a sampled tree from $\tilde{p}(.)$ is almost surely "thin". But first, we prove that if we look at a particular cut, the corresponding sampled tree will have the $\alpha$-thinness property with high probability where $\alpha = O(\frac{logn}{loglogn})$.
+We first define $\tilde{p}(.)$ as the exponential distribution that we get from applying Theorem 2.5 to $\textbf{z}^*$. We prove that a sampled tree from $\tilde{p}(.)$ is almost guaranteed to be "thin". But first, we prove that if we look at a particular cut, the corresponding sampled tree will have the $\alpha$-thinness property with high probability where $\alpha = O(\frac{logn}{loglogn})$.
 \newline
 \newline
 \textbf{Lemma 2.6 (\cite{AGM10}, Section 6):} If $T$ is a spanning tree sample from distribution $\tilde{p}(.)$ for $\epsilon = 0.2$ in a graph $G$ with $n \geq 5$ vertices then, for any subset $U \subset V$,
@@ -366,7 +366,18 @@ Now we can combine the concentration results along with the union-bounding techn
 We say high probability is a probability that is at at least $1 - \frac{1}{n - 1}$.
 \newline
 \newline
-\textbf{Proof:} First, by Lemma 2.6, the probability that some cut $\delta(U)$ violates the $\beta$-thinness of $T_j$ is at most $n^-2.5z^*(\delta(U))$. This shows that for any tree $T_j$ where $1 \leq j \leq \lceil 2logn \rceil$, $T_j$ is $\beta$-thin with high probability for $\beta = 4logn / loglogn$.
+\textbf{Proof (\cite{AGM10}, Section 6):} First, by Lemma 2.6, the probability that some cut $\delta(U)$ violates the $\beta$-thinness of $T_j$ is at most $n^-2.5z^*(\delta(U))$. This shows that for any tree $T_j$ where $1 \leq j \leq \lceil 2logn \rceil$, $T_j$ is $\beta$-thin with high probability for $\beta = 4logn / loglogn$. \newline
+\indent Now we show that there are at most $n^{2l}$ cuts of size at most l times the minimum cost value for any half-integer $l \geq 1$ \cite{Kar93}. By the Held-Karp relaxation and $\textbf{z}^*$, $\textbf{z}^*(\delta(U)) \geq 2(1 - 1/n)$, which shows there is at most $n^l$ cuts $\delta(U)$ with $\textbf{z}^*(\delta(U)) \leq l(1 - 1/n)$ for any integer $l \geq 2$. Thus, applying union bound \cite{Kar93} along with $n \geq 5$, we find that the probability that there exists a cut $\delta(U)$ with $|T_j \cap \delta(U)| > \beta \textbf{z}^*(\delta(U))$ is at most
+\begin{equation*}
+\sum\limits_{i = 3}^{\inf}n^in^{-2.5(i-1)(1-1/n)} \leq \sum\limits_{i = 3}^{\inf}n^{-i + 2} = \frac{1}{n - 1}
+\end{equation*}
+showing that there exists a cut where the $\beta$-thinness property is violated by $T^*$ is at most $1 - \frac{1}{n - 1}$. The excepted cost of $T_j$ is
+\begin{equation*}
+E[c(T_j)] \leq \sum\limits_{e \in E}\tilde{z}_e \leq (1 + \epsilon)\frac{n - 1}{n}\sum\limits_{a \in A}x_{a}^{*} \leq (1 + \epsilon)OPT_{HK}
+\end{equation*}
+From here, we can use the Markov inequality to say that for any $T_j$, the probability that $c(T_j) > 2OPT_{HK}$ is at most $(1 + \epsilon)/2$, which shows that with a probability at most $(\frac{1+\epsilon}{2})^{2logn} < 1/n$ for $\epsilon = 0.2$, we have $c(T^*) > 2OPT_{HK}$, thus proving the theorem. \hfill\qed
+\newline
+\newline  
 %%%%%%%%%%%%%%%%%%%%Section 3 An Inapproximability Bounds of ATSP%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Inapproximability Bounds of ATSP}
 
