@@ -21,13 +21,13 @@ We look at the state of the art algorithm for the general case of the Asymmetric
 \section{Introduction}
 The traveling salesman problem is one of the most well-known and studied problems in theoretical computer science and operations research. Many real world problems, from delivery routing to latency networks to DNA sequencing, can be framed as some variation of the traveling salesman problem. In this paper, we look at the current state of the art algorithms for the asymmetric traveling salesman problem (ATSP) where the costs satisfy the triangle inequality (costs from some point $u$ to point $w$ is at most the cost from point $u$ to point $v$ + cost from point $v$ to point $w$) but the cost from some point $u$ to point $v$ does not necessarily equal the cost from point $v$ to point $u$. From this description, we can frame the symmetric traveling salesman problem (the cost from some point $u$ to point $v$ does equal the cost from point $v$ to point $u$) as a special case of ATSP. \newline
 \indent In Section 2, we provide an overview of an $O$(log $n$ / log log $n$)-approximation algorithm for the general case of ATSP for costs satisfying the triangle inequality which comes from the work of Asadpour et al. \cite{AGM10}. The $O$(log $n$ / log log $n$)-approximation algorithm introduces the concept of the "thinness" of a spanning tree where the thinness correlates with the approximation bound of ATSP. This is an improvement over the decades-long standing $\Theta$(log$n$)-approximation bound given by the work of Frieze et al. \cite{FGM83}. \newline
-\indent In Section 3, we give an overview of the tools and methods used to derive the currently best known inapproximability bounds for ATSP. Karpinski \newline
-\indent In section 4, we detail some of the recent work for special cases of ATSP.  Gharan and Saberi showed that there is a constant factor approximation on ATSP of planar graphs and graphs with bounded genus \cite{GS11}. Anari and Gharan showed that the integrality gap of ATSP is $O$(poly log log $n$) \cite{AG15}, but there is no current method known to construct a solution of $O$(poly log log $n$)-approximation. The recent work of Svensson et al. showcased a new heuristic for tackling approximating ATSP \cite{Sve15}, with a constant factor approximation on a special case of ATSP that contains only two different edge weights \cite{STV16}. \newline
-\indent Lastly, in section 5, we conclude with opinions on the hypothesized next steps towards a constant factor approximation algorithm for the general case of ATSP.
+\indent In Section 3, we give an overview of the tools and methods that Karpinski et al. \cite{KLS15} used to derive the current best 75/74 inapproximability bounds for ATSP. They introduce a tool called the ``bi-wheel amplifier'' that improves the number of satisfied constraints for a certain type of CSP. This improvement triumphs the 117/116 inapproximability bound given by Papadimitriou and Vempala \cite{PV06}.  \newline
+\indent In Section 4, we detail some of the recent work for special cases of ATSP.  Gharan and Saberi showed that there is a constant factor approximation on ATSP of planar graphs and graphs with bounded genus \cite{GS11}. Anari and Gharan showed that the integrality gap of ATSP is $O$(poly log log $n$) \cite{AG15}, but there is no current method known to construct a solution of $O$(poly log log $n$)-approximation. The recent work of Svensson et al. showcased a new heuristic for tackling approximating ATSP \cite{Sve15}, with a constant factor approximation on a special case of ATSP that contains only two different edge weights \cite{STV16}. \newline
+\indent In Section 5, we will wrap up the paper with opinions on the next steps towards a constant factor approximation algorithm for the general case of ATSP.
 
 %%%%%%%%%%%%%%%%%%%%Section 2 An O logn / loglogn approx algo%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{An $O$(log $n$ / log log $n$)-approximation algorithm for ATSP}
-Algorithm 1  details the $O$(log $n$ / log log $n$)-approximation algorithm for ATSP (from \cite{AGM10} section 1). 
+In this section, we dive deeply into the works of Asadpour et al. \cite{AGM10} and look through all the methods and theorems to see how the $O$(log $n$ / log log $n$)-approximation algorithm has resulted. Algorithm 1 details the $O$(log $n$ / log log $n$)-approximation algorithm for ATSP (from \cite{AGM10} section 1). 
 \begin{algorithm}
 \caption{An $O$(log $n$ / log log $n$)-approximation algorithm for ATSP \cite{AGM10}}
 \begin{algorithmic}
@@ -38,7 +38,7 @@ Algorithm 1  details the $O$(log $n$ / log log $n$)-approximation algorithm for 
 \STATE{}
 \STATE{2. Let $E$ be the support graph of $\textbf{z}^*$ where we disregard the directions of arcs. We then find weights \{$\tilde{\gamma}\}_{e \in E}$ such that $\tilde{p}(T)$ is approximately proportional to $\text{exp}(\sum\limits_{e \in T}\tilde{\gamma}_e)$ where, for any edge $e \in E$, $\sum\limits_{T \in \mathcal{T} : T \ni e}\tilde{p}(T) \leq (1 + \epsilon)z_{e}^{*}$, for a small value $\epsilon$.}
 \STATE{}
-\STATE{3. Sample $\Theta$(log$n$) spanning trees $T_i$ from $\tilde{p}(.)$. Orient all the edges of the sampled spanning trees to minimize its cost since the spanning tree only has to be weakly connected. Let $\overrightarrow{T}$ represent an oriented tree. Let $T^{*}$ be the spanning tree that has minimum total cost amongst all the sample spanning trees.}
+\STATE{3. Sample $2 \lceil logn \rceil$ spanning trees $T_i$ from $\tilde{p}(.)$. Orient all the edges of the sampled spanning trees to minimize its cost since the spanning tree only has to be weakly connected. Let $\overrightarrow{T}$ represent an oriented tree. Let $T^{*}$ be the spanning tree that has minimum total cost amongst all the sample spanning trees.}
 \STATE{}
 \STATE{4. Find a minimum cost integral circulation that contains the oriented tree $\overrightarrow{T}^*$. This will give us a multigraph. Shortcut the multigraph to get a Eulerian tour and output the result.}
 \end{algorithmic}
@@ -141,7 +141,7 @@ We also make a note that since $\textbf{x}^*$ is an optimum extreme point soluti
 
 %Section 2.4 Thin Tree Properties%
 \subsection{Thin Trees, Flow Circulation, and Their Relation to ATSP}
-A crucial element to the algorithm of approximating ATSP is the notion of thin trees. In section 2.1, we briefly described what "thinness" means and what properties a thin tree has. We will now detail it further to showcase why thin trees are crucial to this approximation algorithm and prove its correctness. \newline
+A keyf element to the algorithm of approximating ATSP is the notion of thin trees. In section 2.1, we briefly described what "thinness" means and what properties a thin tree has. We will now detail it further to showcase why thin trees are crucial to this approximation algorithm and prove its correctness. \newline
 \indent We jump to step 4 of the algorithm to prove it. First, though, a theorem that is required for the proof of correctness of thin trees is Hoffman's circulation theorem \cite{Sch03}. A circulation is essentially any function $f : A \rightarrow \mathbb{R}$ such that $f(\delta^+(v)) = f(\delta^-(v))$ for each vertex $v \in V$. Hoffman's circulation theorem gives a necessary and sufficient condition for the existence of circulation on the arcs subject to the arcs' lower and upper capacities. The following is Hoffman's circulation theorem (we won't prove Hoffman's circulation theorem; see \cite{Sch03}, Theorem 11.2 for the proof):
 \newline
 \newline
@@ -216,7 +216,7 @@ s.t. \indent \sum\limits_{T \ni e}p(T) = z_e \indent \forall e \in E,
 \begin{equation*}
 \indent \ \ p(T) \geq 0 \indent \forall T \in \mathcal{T}.
 \end{equation*}
-This convex program is feasible since \textbf{z} is in the relative interior of the spanning tree polytope P and as the objective function is bounded and the feasible region is compact, the infinum (greatest lower bound) is found, which conveys the existence of an optimal solution $p^*(.)$. Also, since the objective function is stricly convex (any local minima is essentially a global minima), this implies that the maximum entropy distribution $p^*(.)$ is unique. $OPT_{CP}$ will represent the optimum value of the convex program (9). \newline
+This convex program is feasible since \textbf{z} is in the relative interior of the spanning tree polytope P and as the objective function is bounded and the feasible region is compact, the infinum (greatest lower bound) is found, which shows the existence of an optimal solution $p^*(.)$. Also, since the objective function is stricly convex (any local minima is essentially a global minima), this implies that the maximum entropy distribution $p^*(.)$ is unique. $OPT_{CP}$ will represent the optimum value of the convex program (9). \newline
 \indent We define $p(T)$ as the probability of sampling a spanning tree $T$ in $p(.)$. Also, for any feasible solution $p(.)$, we have $\sum\limits_{T}p(T) = 1$ because
 \begin{equation*}
 n - 1 = \sum\limits_{e \in E}z_e = \sum\limits_{e \in E}\sum\limits_{T \ni e}p(T) = (n - 1)\sum\limits_{T}p(T)
@@ -296,7 +296,7 @@ p_2 = Pr[e_2 \in T | e_1 \in T] = \frac{\sum\limits_{T' \ni e_1, e_2}\prod\limit
 \begin{equation*}
 = \frac{\sum\limits_{T' \ni e_1, e_2}\prod\limits_{e \in T'\\e_1}\lambda_e}{\sum\limits_{T' \ni e_1}\prod\limits_{e \in T'\\e_1}\lambda_e}.
 \end{equation*}
-This tells us that the probability of $e_2 \in T$ conditioned on $e_1 \in T$ is equal to the probability that $e_2$ is in a $\lambda$-random tree of a graph given by $G$ by contracting edge $e_1$. If we discard $e_1$, then the probability $p_2$ is equal to the probability that $e_2$ resides in a $\lambda$-random tree of a graph given by $G$ by removing $e_1$. Thus, for the general case, we can say that $p_i$ is equal to the probability that edge $e_i$ resides in a $\lambda$-random tree of a graph given by $G$ by contracting all edges that we decided to add to the tree and deleting all the edges that we decided to discard. Thus, to get each $p_i$, we compute the probability $p_{G'}[\lambda,f]$ that some edge $f$ is in a $\lambda$-random tree of a given multigraph $G^{'}$ and values of $\lambda_e$'s by noting that $p_{G'}[\lambda,f]$ is equal to $\lambda_f$ times the effective resistence of $f$ in $G'$ treated as an electrical circuit with conductances of edges given by $\lambda$ (\cite{LP14}, Ch. 4). Intuitively, $p_{G'}[\lambda,f]$ will be negatively correlated with resistance. The effective resistance is computed by the method given by \cite{GBS08}, Section 2.4, where, in simplistic terms, involves inverting some matrix that is derived from the Laplacian of $G'$. The Laplacian L is where
+This tells us that the probability of $e_2 \in T$ on the condition that $e_1 \in T$ is equal to the probability that $e_2$ is in a $\lambda$-random tree of a graph given by $G$ by contracting edge $e_1$. If we discard $e_1$, then the probability $p_2$ is equal to the probability that $e_2$ resides in a $\lambda$-random tree of a graph given by $G$ by removing $e_1$. Thus, for the general case, we can say that $p_i$ is equal to the probability that edge $e_i$ resides in a $\lambda$-random tree of a graph given by $G$ by contracting all edges that we decided to add to the tree and deleting all the edges that we decided to discard. Thus, to get each $p_i$, we compute the probability $p_{G'}[\lambda,f]$ that some edge $f$ is in a $\lambda$-random tree of a given multigraph $G^{'}$ and values of $\lambda_e$'s by noting that $p_{G'}[\lambda,f]$ is equal to $\lambda_f$ times the effective resistence of $f$ in $G'$ treated as an electrical circuit with conductances of edges given by $\lambda$ (\cite{LP14}, Ch. 4). Intuitively, $p_{G'}[\lambda,f]$ will be negatively correlated with resistance. The effective resistance is computed by the method given by \cite{GBS08}, Section 2.4, where, in simplistic terms, involves inverting some matrix that is derived from the Laplacian of $G'$. The Laplacian L is where
 \begin{equation*}
 L_{i,j} = 
   \begin{cases}
@@ -333,7 +333,7 @@ Pr[|T \cap \delta(U)| > \beta z^*(\delta(U))] \leq n^{-2.5z^*(\delta(U))},
 where $\beta = 4 logn / loglogn$.
 \newline
 \newline
-\textbf{Proof (\cite{AGM10}, Section 6):} $\forall e \in E, \tilde{z}_e \leq (1 + \epsilon)z_{e}^{*}$, where $\epsilon = 0.2$ is our desired accuracy of approximation of $\textbf{z}^*$ by $\tilde{z}$ as given in subsection 2.5, Theorem 2.5. Thus
+\textbf{Proof (\cite{AGM10}, Section 6):} $\forall e \in E, \tilde{z}_e \leq (1 + \epsilon)z_{e}^{*}$, where $\epsilon = 0.2$ is our desired accuracy of approximation of $\textbf{z}^*$ by $\tilde{z}$ as given in section 2.5, Theorem 2.5. Thus
 \begin{equation*}
 E[|T \cap \delta(U)|] = \tilde{z}(\delta(U)) \leq (1 + \epsilon)z^*(\delta(U)).
 \end{equation*}
@@ -375,9 +375,20 @@ showing that there exists a cut where the $\beta$-thinness property is violated 
 \begin{equation*}
 E[c(T_j)] \leq \sum\limits_{e \in E}\tilde{z}_e \leq (1 + \epsilon)\frac{n - 1}{n}\sum\limits_{a \in A}x_{a}^{*} \leq (1 + \epsilon)OPT_{HK}
 \end{equation*}
-From here, we can use the Markov inequality to say that for any $T_j$, the probability that $c(T_j) > 2OPT_{HK}$ is at most $(1 + \epsilon)/2$, which shows that with a probability at most $(\frac{1+\epsilon}{2})^{2logn} < 1/n$ for $\epsilon = 0.2$, we have $c(T^*) > 2OPT_{HK}$, thus proving the theorem. \hfill\qed
+From here, we can use Markov's inequality $(Pr[X \geq a] \leq E(X)/a)$ to say that for any $T_j$, the probability that $c(T_j) > 2OPT_{HK}$ is at most $(1 + \epsilon)/2$, which shows that with a probability at most $(\frac{1+\epsilon}{2})^{2logn} < 1/n$ for $\epsilon = 0.2$, we have $c(T^*) > 2OPT_{HK}$, thus proving the theorem. \hfill\qed
 \newline
-\newline  
+\newline
+Now we can prove that there is $O(logn / loglogn)$-approximation factor solution to ATSP.
+\newline
+\newline
+\textbf{Theorem 2.8 (\cite{AGM10}, Section 6):} Algorithm 1 finds a $(2 + 8logn / loglogn)$-approximate solution to the Asymmetric Traveling Salesman Problem with high probability and in time that is polynomial in the size of the input.
+\newline
+\newline
+\textbf{Proof:} We start with step 1 of the algorithm to find an optimal extreme-point solution $\textbf{x}^*$ to the Held-Karp LP relaxation of ATSP. In section 2.2, we detailed that the value of $\textbf{x}^* = OPT_{HK}$. We then define $\textbf{z}^*$ by (5) in section 2.3. \newline
+\indent Next, in step 2 of the algorithm, we use Theorem 2.5 on $\textbf{z}^*$, along with $\epsilon = 0.2$, to get the weights $\{\tilde{\gamma}\}_{e \in E}$. This runs in polynomial time because since $\textbf{x}^*$ was an extreme point, then $z_{min}^{*} \geq e^{-O(nlogn)}$. \newline
+\indent For step 3 of the algorithm, we use the sampling method detailed in section 2.6 to sample $2\lceil logn \rceil$ spanning trees in polynomial time. And from Theorem 2.7, we know that $T^*$ is $(4logn / loglogn, 2)$-thin with high probability. \newline
+\indent Lastly, in step 4 of the algorithm, we use Theorem 2.3 to get a $((8logn / loglogn) + 2)$-approximation of the ATSP instance. This concludes the proof of this theorem. \hfill \qed
+
 %%%%%%%%%%%%%%%%%%%%Section 3 An Inapproximability Bounds of ATSP%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Inapproximability Bounds of ATSP}
 
@@ -389,6 +400,7 @@ From here, we can use the Markov inequality to say that for any $T_j$, the proba
 \subsection{Polyloglog$n$ Integrality Gap of ATSP}
 
 \subsection{Local-Connectivity ATSP}
+
 
 %%%%%%%%%%%%%%%%%%%%Section 5 Conclusion%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Concluding Remarks}

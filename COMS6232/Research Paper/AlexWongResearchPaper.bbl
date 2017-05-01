@@ -82,6 +82,11 @@
   chernoff-hoeffding bounds.
 \newblock {\em SIAM Journal on Computing\/} (1997), 26:350--368.
 
+\bibitem{PV06}
+{\sc Papadimitriou, C.~H., and Vempala, S.}
+\newblock On the approximability of the traveling salesman problem.
+\newblock {\em Combinatorica\/} (2006), 26(1):101--120.
+
 \bibitem{PY93}
 {\sc Papadimitriou, C.~H., and Yannakakis, M.}
 \newblock The traveling salesman problem with distances one and two.
