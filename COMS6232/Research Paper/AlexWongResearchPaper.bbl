@@ -55,6 +55,12 @@
 \newblock The traveling salesman problem and minimum spanning trees.
 \newblock {\em Operations Research\/} (1970), 18:1138--1162.
 
+\bibitem{Kar93}
+{\sc Karger, D.~R.}
+\newblock Global min-cuts in rnc, and other ramifications of a simple min-cut
+  algorithm.
+\newblock {\em In SODA\/} (1993), pages 21--30.
+
 \bibitem{KLS15}
 {\sc Karpinski, M., Lampis, M., and Schmied, R.}
 \newblock New approximability bounds for {TSP}.
@@ -69,6 +75,12 @@
 {\sc Lyons, R., and Peres, Y.}
 \newblock {\em Probability on Trees and Networks}.
 \newblock Cambridge University Press, 2014.
+
+\bibitem{PS97}
+{\sc Panconesi, A., and Srinivasan, A.}
+\newblock Randomized distributed edge coloring via an extension of the
+  chernoff-hoeffding bounds.
+\newblock {\em SIAM Journal on Computing\/} (1997), 26:350--368.
 
 \bibitem{PY93}
 {\sc Papadimitriou, C.~H., and Yannakakis, M.}
