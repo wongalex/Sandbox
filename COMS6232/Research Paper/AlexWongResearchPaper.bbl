@@ -40,6 +40,11 @@
 \newblock A randomized rounding approach to the traveling salesman problem.
 \newblock {\em In: Proceedings of FOCS\/} (2011).
 
+\bibitem{GBS08}
+{\sc Ghosh, A., Boys, S., and Saberi, A.}
+\newblock Minimizing effective resistance of a graph.
+\newblock {\em SIAM Review\/} (2008), 50(1):37--66.
+
 \bibitem{Goe06}
 {\sc Goemans, M.~X.}
 \newblock Minimum bounded degree spanning trees.
@@ -54,6 +59,16 @@
 {\sc Karpinski, M., Lampis, M., and Schmied, R.}
 \newblock New approximability bounds for {TSP}.
 \newblock {\em J. Comput. Syst. Sci.\/} (2015), 81(8):1665--1667.
+
+\bibitem{VGK90}
+{\sc Kulkarni, V.~G.}
+\newblock Generating random combinatorial objects.
+\newblock {\em Journal of Algorithms\/} (1990), 11:185--207.
+
+\bibitem{LP14}
+{\sc Lyons, R., and Peres, Y.}
+\newblock {\em Probability on Trees and Networks}.
+\newblock Cambridge University Press, 2014.
 
 \bibitem{PY93}
 {\sc Papadimitriou, C.~H., and Yannakakis, M.}

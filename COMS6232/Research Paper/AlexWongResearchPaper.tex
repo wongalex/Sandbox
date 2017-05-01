@@ -15,7 +15,7 @@
 \begin{document}
 \maketitle
 \begin{abstract}
-We look at the state of the art algorithm for the general case of the Asymmetric Traveling Salesman problem and its current known inapproximability bounds. The currently best algorithm, by Asadpour et al.\cite{AGM10}, details an $O$(log $n$ / log log $n$)-approximation algorithm for the general case of ATSP for costs satisfying the triangle inequality. An algorithm by Karpinski et al.\cite{KLS15} gives us a hardness of approximation bounds of 75 / 74 for ATSP. We also briefly touch on some recent work on approximation factors of special cases of ATSP, including an approach by Svensson et al.\cite{STV16} that details a constant factor approximation algorithm for a special case of ATSP that contains only two different edge weights of arbitrary weight where the costs satisfy the triangle inequality.
+We look at the state of the art algorithm for the general case of the Asymmetric Traveling Salesman problem and its current known inapproximability bounds. The currently best algorithm, by Asadpour et al.\cite{AGM10}, details an $O$(log $n$ / log log $n$)-approximation algorithm for the general case of ATSP for costs satisfying the triangle inequality. A proof by Karpinski et al.\cite{KLS15} gives us a hardness of approximation bounds of 75 / 74 for ATSP. We also briefly touch on some recent work on approximation factors of special cases of ATSP, including an approach by Svensson et al.\cite{STV16} that details a constant factor approximation algorithm for a special case of ATSP that contains only two different edge weights of arbitrary weight where the costs satisfy the triangle inequality.
 \end{abstract}
 %%%%%%%%%%%%%%%%%%%%Section 1 Introduction%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Introduction}
@@ -139,12 +139,12 @@ where we see that $\textbf{z}^*$ satisfies inequality (7) strictly. Also, since 
 We also make a note that since $\textbf{x}^*$ is an optimum extreme point solution, it's known that its support $A$ has at most $3n - 4$ arcs (see \cite{Goe06}, Theorem 15). Also, $\textbf{x}^*$ can be expressed as the unique solution (due to global minima of a convex program) of an invertible system with only 0 - 1 coefficients, then every entry $\textbf{x}_{a}^{*}$ is rational with an integral numerator and denominator bounded by $2^{O(nlogn)}$, thus we can say that $\textbf{z}_{min}^{*} > 2^{-O(nlogn)}$ (see \cite{AGM10} section 3).
 
 %Section 2.4 Thin Tree Properties%
-\subsection{Thin Trees and Their Relation to ATSP}
+\subsection{Thin Trees, Flow Circulation, and Their Relation to ATSP}
 A crucial element to the algorithm of approximating ATSP is the notion of thin trees. In section 2.1, we briefly described what "thinness" means and what properties a thin tree has. We will now detail it further to showcase why thin trees are crucial to this approximation algorithm and prove its correctness. \newline
-\indent We jump to step 4 of the algorithm to prove it. First, though, a theorem that is required for the proof of correctness of thin trees is Hoffman's circulation theorem. A circulation is essentially any function $f : A \rightarrow \mathbb{R}$ such that $f(\delta^+(v)) = f(\delta^-(v))$ for each vertex $v \in V$. Hoffman's circulation theorem gives a necessary and sufficient condition for the existence of circulation on the arcs subject to the arcs' lower and upper capacities. The following is Hoffman's circulation theorem (we won't prove Hoffman's circulation theorem; see \cite{Sch03}, Theorem 11.2 for the proof):
+\indent We jump to step 4 of the algorithm to prove it. First, though, a theorem that is required for the proof of correctness of thin trees is Hoffman's circulation theorem \cite{Sch03}. A circulation is essentially any function $f : A \rightarrow \mathbb{R}$ such that $f(\delta^+(v)) = f(\delta^-(v))$ for each vertex $v \in V$. Hoffman's circulation theorem gives a necessary and sufficient condition for the existence of circulation on the arcs subject to the arcs' lower and upper capacities. The following is Hoffman's circulation theorem (we won't prove Hoffman's circulation theorem; see \cite{Sch03}, Theorem 11.2 for the proof):
 \newline
 \newline
-\textbf{Theorem 2.2 (Hoffman's Circulation Theorem\cite{Sch03}):} Given lower and upper capacities $l, u : A \rightarrow \mathbb{R}$, there exists a circulation $f$ satisfying $l(a) \leq f(a) \leq u(a)$ for all $a \in A$ if and only if:
+\textbf{Theorem 2.2 (Hoffman's Circulation Theorem \cite{Sch03}):} Given lower and upper capacities $l, u : A \rightarrow \mathbb{R}$, there exists a circulation $f$ satisfying $l(a) \leq f(a) \leq u(a)$ for all $a \in A$ if and only if:
 \newline \indent 1. $l(a) \leq u(a)$ for all $a \in A$ and
 \newline \indent 2. for all subsets $U \subseteq V$, we have $l(\delta^-(U)) \leq u(\delta^+(U))$.
 \newline Furthermore, if $l$ and $u$ are integer-valued, $f$ can be chosen to be integer-valued too.
@@ -202,6 +202,7 @@ So, we can finally conclude
 \Rightarrow l(\delta^-(U)) \leq u(\delta^+(U))
 \end{equation*}
 for any $U \subseteq V$, thus showing that the circulation g does exist, which concludes the proof of this theorem. \hfill\qed
+
 %Section 2.5 Maximum Entropy Distribution%
 \subsection{Maximum Entropy Distribution}
 In this subsection, we detail the approach on how to find an entropy distribution $p(.)$. We let $\mathcal{T}$ represent the collection of all spanning trees of $G = (V, E)$ and let \textbf{z} represent some arbitrary point in the relative interior of the spanning tree polytope $P$ of $G$. We now let $p^*(.)$ be the maximum entropy distribution with respect to the marginal probabilites imposed by \textbf{z}. This is considered the optimum solution of the following convex program:
@@ -219,8 +220,13 @@ This convex program is feasible since \textbf{z} is in the relative interior of 
 \begin{equation*}
 n - 1 = \sum\limits_{e \in E}z_e = \sum\limits_{e \in E}\sum\limits_{T \ni e}p(T) = (n - 1)\sum\limits_{T}p(T)
 \end{equation*}
-based on the constraints given by convex program (9). \newline
-\indent Now, assuming that \textbf{z} is in the relative interior of the spanning tree polytope P, we want to now show that show that $p^*(T) > 0 \ \ \forall T \in \mathcal{T}$ and that $p^*(T)$ gives a simple exponential formula. To show this, we find the Lagrange to the convex program (9). Thus, $\forall e \in E$, we have a Lagrange multiplier $\delta_e$ (not to be confused with $\delta^-$ and $\delta^+$ which represents incoming and outgoing edges, respectively) to the constraint corresponding to the marginal probability $z_e$, and we define the Lagrange function as
+based on the constraints given by convex program (9). We now define a theorem: 
+\newline
+\newline
+\textbf{Theorem 2.4 (see \cite{AGM10}, section 5):} Given a vector \textbf{z} in the relative interior of the spanning tree polytope $P$ of $G = (V, E)$, $\exists \ \gamma_{e}^{*} \ \forall e\in E$, such that if we sample a spanning tree $T$ of $G$ according to $p^*(T) := e^{\gamma^*(T)}$, then Pr[$e \in T$] $= z_e \ \ \forall e \in E$.
+\newline
+\newline
+\textbf{Proof:} Now, assuming that \textbf{z} is in the relative interior of the spanning tree polytope P, we want to now show that show that $p^*(T) > 0 \ \ \forall T \in \mathcal{T}$ and that $p^*(T)$ gives a simple exponential formula. To show this, we find the Lagrange to the convex program (9). Thus, $\forall e \in E$, we have a Lagrange multiplier $\delta_e$ (not to be confused with $\delta^-$ and $\delta^+$ which represents incoming and outgoing edges, respectively) to the constraint corresponding to the marginal probability $z_e$, and we define the Lagrange function as
 \begin{equation*}
 L(p,\delta) = \sum\limits_{T \in \mathcal{T}}p(T)logp(T) - \sum\limits_{e \in E}\delta_e\bigg(\sum\limits_{T \ni e}p(T) - z_e\bigg) 
 \end{equation*}
@@ -244,10 +250,60 @@ p(T) = e^{\delta(T) - 1}
 \end{equation}
 So, the inner infimum
 \begin{equation*}
-\inf_{p \geq 0}L(p,\delta) = \sum\limits_{e \in E}\delta_ez_e - \sum\limits_{T \in \mathcal{T}}e^{\delta(T) - 1}
+\inf_{p \geq 0}L(p,\delta) = \sum\limits_{e \in E}\delta_{e}z_e - \sum\limits_{T \in \mathcal{T}}e^{\delta(T) - 1}
 \end{equation*}
-In the latter part of step 2 of the algorithm, to find the weights $\tilde{\gamma}_{e}, \forall e \in E$, requires lengthy non-trivial calculations which will not be detailed within this paper. There are two methods to find $\tilde{\gamma}_{e}$'s: either the combinatorial approach (see \cite{AGM10} section 7) where the basic idea is to iteratively tweak the weights of $\tilde{\gamma}_{e}$ until their marginals $= (1 + \epsilon/2)z_e$ or the ellipsoid method (see \cite{AGM10} section 8) where the basic idea is to find a near optimal solution of the dual of the convex program.
+and we use a change of variables to define $\gamma_e= \delta_e - \frac{1}{n-1}$ for $e \in E$, the dual (10) can be rewritten as
+\begin{equation}
+\sup_{\gamma}\bigg(1 + \sum\limits_{e \in E}z_e\gamma_e - \sum\limits_{T \in \mathcal{T}}e^{\gamma(T)}\bigg).
+\end{equation}
+This tells us that vector \textbf{z} being in the relative interior of P satisfies Slater's condition and being convex implies that the supremum of (12) is given by $\gamma^*$, and thus the Lagrange dual value = the optimum value $OPT_{CP}$. Also, given that we have the primal optimum solution $p^*$, any dual optimum solution $\gamma^*$ must satisfy
+\begin{equation}
+L(p,\gamma^*) \geq L(p^*,\gamma^*) \geq L(p^*,\gamma)
+\end{equation}
+for any $p \geq 0$ and any $\gamma$. Thus, $p^*$ is the unique minimizer of $L(p,\gamma^*)$ and from equation (11),
+\begin{equation}
+p^*(T) = e^{\gamma^*(T)}
+\end{equation}
+thus proving the theorem. \hfill \qed
+\newline
+\newline
+\indent To find the weights $\tilde{\gamma}_{e}, \forall e \in E$, requires lengthy non-trivial calculations which will not be detailed within this paper. There are two methods to find $\tilde{\gamma}_{e}$'s: either the combinatorial approach (see \cite{AGM10} section 7) where the basic idea is to iteratively tweak the weights of $\tilde{\gamma}_{e}$ until their marginals $= (1 + \epsilon/2)z_e$ or the ellipsoid method (see \cite{AGM10} section 8) where the basic idea is to find a near optimal solution of the dual of the convex program. We will define a theorem that utilizes those weights $\tilde{\gamma}_{e}$ since it is crucial for subsequent theorems and proofs:
+\newline
+\newline
+\textbf{Theorem 2.5 (see \cite{AGM10}, section 5):} Given \textbf{z} in the spanning tree polytope of $G = (V, E)$ and some $\epsilon > 0$, values $\tilde{\gamma}_e \ \ \forall e \in E$ can be found, so that if we define the exponential family distribution
+\begin{equation*}
+\tilde{p}(T) := \frac{1}{P}exp(\sum\limits_{e \in T}\tilde{\gamma}_e)
+\end{equation*}
+for all $T \in \mathcal{T}$ where 
+\begin{equation*}
+P := \sum\limits_{T \in \mathcal{T}}exp(\sum\limits_{e \in T}\tilde{\gamma}_e
+\end{equation*}
+then, for every edge $e \in E$,
+\begin{equation*}
+\tilde{z}_e := \sum\limits_{T \in \mathcal{T} : T \ni e}\tilde{p}(T) \leq (1 + \epsilon)z_e.
+\end{equation*}
+This theorem essentially states that the marginal probabilities of \textbf{z} are approximately preserved. Also, we set $\epsilon = 0.2$ and $z_{min} = 2^{-O(nlogn)}$ to be used for calculations in subsequent subsections. \newline
+\indent We now define the notion of $\lambda$-random trees, which essentially correlate with spanning trees. We say that a $\lambda$-random tree $T$ of $G$ is a spanning tree T chosen from the set of all spanning trees of $G$ with probability proportional to $\prod\limits_{e \in T}\lambda_e$ where $\lambda_e \geq 0$ for $e \in E$. For the case where all of the $\lambda_e$'s are equal, the result is a uniform spanning tree of G. For rational $\lambda_e$'s, a $\lambda$-random spanning tree in G correlates to a uniform spanning tree in a multigraph obtained from G by allowing the multiplicity of edge $e$ be proportional to $\lambda_e$. From Theorem 2.5, we see that if we sample a tree $T$ from an exponential distribution $p(.)$, the tree $T$ is then $\lambda$-random (spanning) for $\lambda_e := e^{\gamma_e} \ \ \forall e \in E$.
 
+
+%Section 2.6 Sampling a Random Tree%
+\subsection{$\lambda$-Random (Spanning) Trees}
+To sample a $\lambda$-tree, we will utilize an iterative approach similiar to \cite{VGK90} so that our approach will have a polynomial running time for general $\lambda_e$'s. The basic idea is to order the edges $e_1,...,e_m$ of $G$ arbitrarily and then iteratively process the edges by deciding probabilistically whether or not to add the edge to the final tree or discard the edge. Essentially, when processing the i-th edge $e_i$, we decide whether or not to add it to the final spanning tree $T$ based on the probability $p_i$, which is based off the probability that $e_i$ is in a $\lambda$-random tree conditioned on the past decisions that were made for edges $e_1,...,e_{i-1}$ in past iterations. To compute these probabilities efficiently, first note that $p_1 = z_{e1}$. If we choose to include $e_1$ in the tree, then
+\begin{equation*}
+p_2 = Pr[e_2 \in T | e_1 \in T] = \frac{\sum\limits_{T' \ni e_1, e_2}\prod\limits_{e \in T'}\lambda_e}{\sum\limits_{T' \ni e_1}\prod\limits_{e \in T'}\lambda_e}
+\end{equation*}
+\begin{equation*}
+= \frac{\sum\limits_{T' \ni e_1, e_2}\prod\limits_{e \in T'\\e_1}\lambda_e}{\sum\limits_{T' \ni e_1}\prod\limits_{e \in T'\\e_1}\lambda_e}.
+\end{equation*}
+This tells us that the probability of $e_2 \in T$ conditioned on $e_1 \in T$ is equal to the probability that $e_2$ is in a $\lambda$-random tree of a graph given by $G$ by contracting edge $e_1$. If we discard $e_1$, then the probability $p_2$ is equal to the probability that $e_2$ resides in a $\lambda$-random tree of a graph given by $G$ by removing $e_1$. Thus, for the general case, we can say that $p_i$ is equal to the probability that edge $e_i$ resides in a $\lambda$-random tree of a graph given by $G$ by contracting all edges that we decided to add to the tree and deleting all the edges that we decided to discard. Thus, to get each $p_i$, we compute the probability $p_{G'}[\lambda,f]$ that some edge $f$ is in a $\lambda$-random tree of a given multigraph $G^{'}$ and values of $\lambda_e$'s by noting that $p_{G'}[\lambda,f]$ is equal to $\lambda_f$ times the effective resistence of $f$ in $G'$ treated as an electrical circuit with conductances of edges given by $\lambda$ (\cite{LP14}, Ch. 4). Intuitively, $p_{G'}[\lambda,f]$ will be negatively correlated with resistance. The effective resistance is computed by the method given by \cite{GBS08}, Section 2.4, where, in simplistic terms, involves inverting some matrix that is derived from the Laplacian of $G'$. The Laplacian L is where
+\begin{equation*}
+L_{i,j} = 
+  \begin{cases}
+    -\lambda_e \indent \indent \indent \ \ e = (i,j) \in E \\
+    \sum\limits_{e \in \delta(\{i\}}\lambda_e \indent \indent i = j \\
+    0 \indent \indent \indent \indent \ otherwise.
+  \end{cases}
+\end{equation*}
 %%%%%%%%%%%%%%%%%%%%Section 3 An Inapproximability Bounds of ATSP%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Inapproximability Bounds of ATSP}
 
