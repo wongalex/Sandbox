@@ -12,6 +12,11 @@
   asymmetric traveling salesman problem.
 \newblock {\em In: Proceedings of SODA\/} (2010), pages 379--389.
 
+\bibitem{BK01}
+{\sc Berman, P., and Karpinski, M.}
+\newblock Efficient amplifiers and bounded degree optimization.
+\newblock {\em ECCC\/} (2001).
+
 \bibitem{Chr76}
 {\sc Christofides, N.}
 \newblock Worst-case analysis of a new heuristic for the traveling salesman
@@ -86,6 +91,11 @@
 {\sc Papadimitriou, C.~H., and Vempala, S.}
 \newblock On the approximability of the traveling salesman problem.
 \newblock {\em Combinatorica\/} (2006), 26(1):101--120.
+
+\bibitem{PY91}
+{\sc Papadimitriou, C.~H., and Yannakakis, M.}
+\newblock Optimization, approximation, and complexity classes.
+\newblock {\em JCSS\/} (1991), (43):425--440.
 
 \bibitem{PY93}
 {\sc Papadimitriou, C.~H., and Yannakakis, M.}

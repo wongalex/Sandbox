@@ -391,9 +391,18 @@ Now we can prove that there is $O(logn / loglogn)$-approximation factor solution
 
 %%%%%%%%%%%%%%%%%%%%Section 3 An Inapproximability Bounds of ATSP%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Inapproximability Bounds of ATSP}
+In this section, we will detail the tools and methods that Karpinski et al. used to derive the 75/74 inapproximability bound of ATSP. We will not be diving into proofs of any theorems; however, we will use the theorems provided in the paper to explain the process of deriving the 75/74 inapproximability bound.
 
+\subsection{High Level Overview of Algorithm}
+The problem starts from the MAX-E3-LIN2 problem where, given a system of linear equations mod 2 with exactly 3 variables in each equation, we want to find an assignment of the variables that maximizes the number of satisfied equations. A reduction from MAX-E3-LIN2 to a special case of MAX-E3-LIN2 where each variable appears exactly 3 times and the linear equations have a particular structure. This reduction is done using a tool called a ``bi-wheel amplifier''. The special case of MAX-E3-LIN2 then gets reduced to ATSP.
+
+\subsection{Bi-wheel Amplifiers}
+Bi-wheel amplifiers are a variation of the wheel amplifier graphs \cite{BK01}, which generalizes the concept of expander graphs and formalizes the construction based from Papadimitriou and Yannakakis \cite{PY91}. A wheel amplifier is essentially a graph with edge expansion 1 for a subset of its vertices. Edge expansion, denoted h(G), is calculated by $h(G) = \min_{0 < |S| \leq n/2}\frac{|\delta S|}{|S|}$ where $S$ is a subset of vertices of $V$ of the graph $G$ and $\delta S$ are the outgoing edges of $S$. \newline
+\indent 3-regular wheel amplifiers are used within this algorithm. To construct a 3-regular wheel amplifier, you first start with a cycle on $7n$ vertices ($n$ is the number of nodes in the set). Every 7th vertex is considered a contact vertex. All other vertices are considered checkers. You then select a random perfect matching of checkers. The key property of this 3-regular wheel amplifier is that, with high probability, any partition of vertices cuts more edges than the number of contact vertices in the smaller set. \newline
+\indent The bi-wheel amplifier consists of two 3-regular wheel amplifiers. 
 %%%%%%%%%%%%%%%%%%%%Section 4 Special Cases of ATSP%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Special Cases of ATSP}
+In this section, we give a brief introduction and overview of some the methods being used on special cases of ATSP, where the results are better than the currently best known results of the general case of ATSP.
 
 \subsection{ATSP on Graphs with Bounded Genus}
 
