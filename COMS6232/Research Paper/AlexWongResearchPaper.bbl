@@ -55,6 +55,11 @@
 \newblock Minimum bounded degree spanning trees.
 \newblock {\em In FOCS\/} (2006), pages 273--282.
 
+\bibitem{Has01}
+{\sc Hastad, J.}
+\newblock Some optimal inapproximability results.
+\newblock {\em J. ACM\/} (2001), 48(4):798--859.
+
 \bibitem{HK70}
 {\sc Held, M., and Karp, R.}
 \newblock The traveling salesman problem and minimum spanning trees.
